@@ -5,6 +5,13 @@ const FORM_ENDPOINT = '';
 const MOVES = [['attack', 'Attack 1'], ['attack2', 'Attack 2'], ['attack3', 'Attack 3'], ['idle', 'Idle'], ['run', 'Run']];
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Smooth scrolling (Lenis): eases wheel and trackpad scrolling; phones keep their native touch scrolling.
+const lenis = !reduceMotion && window.Lenis ? new Lenis({ autoRaf: true, lerp: 0.1, anchors: { offset: -64 } }) : null;
+function scrollToY(y) {
+  if (lenis) lenis.scrollTo(y);
+  else window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
 // Header: transparent over the hero, solid once you scroll
 const header = document.getElementById('site-header');
 function updateHeader() { header.classList.toggle('solid', window.scrollY > 40); }
@@ -47,7 +54,7 @@ function updateStories() {
 
 // Jump buttons under the classes story scroll to the middle of that class's stretch
 stories.forEach((s) => s.nav.forEach((b, i) => b.addEventListener('click', () => {
-  window.scrollTo({ top: s.top + s.span * (i + 0.5) / s.beats.length, behavior: reduceMotion ? 'auto' : 'smooth' });
+  scrollToY(s.top + s.span * (i + 0.5) / s.beats.length);
 })));
 
 let ticking = false;
@@ -57,11 +64,28 @@ function onScroll() {
   requestAnimationFrame(() => { ticking = false; updateHeader(); updateStories(); });
 }
 window.addEventListener('scroll', onScroll, { passive: true });
-window.addEventListener('resize', () => { measure(); onScroll(); });
+// Phones fire resize as the address bar shows and hides; only re-measure when the width changes.
+let lastWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === lastWidth) return;
+  lastWidth = window.innerWidth;
+  measure(); onScroll();
+});
 window.addEventListener('load', () => { measure(); onScroll(); });
 measure();
 updateHeader();
 updateStories();
+
+// Load and decode the class renders well before the classes story reaches the screen
+const clsImgs = [...document.querySelectorAll('.cls-art img')];
+if ('IntersectionObserver' in window) {
+  const pre = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    pre.disconnect();
+    clsImgs.forEach((img) => { img.loading = 'eager'; img.decode().catch(() => {}); });
+  }, { rootMargin: '150% 0px' });
+  pre.observe(document.getElementById('classes'));
+}
 
 // Hero dust: a few slow gold motes in the spotlight. Off for reduced motion and while the hero is off screen.
 const dust = document.getElementById('dust');
@@ -70,11 +94,11 @@ if (dust && !reduceMotion) {
   let motes = [];
   let running = false;
   function sizeDust() {
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = 1; // soft motes don't need retina sharpness, and 1x keeps every frame cheap
     dust.width = dust.clientWidth * dpr;
     dust.height = dust.clientHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(70, dust.clientWidth / 14));
+    const count = Math.round(Math.min(36, dust.clientWidth / 22));
     motes = Array.from({ length: count }, () => ({
       x: Math.random() * dust.clientWidth,
       y: Math.random() * dust.clientHeight,
@@ -100,7 +124,8 @@ if (dust && !reduceMotion) {
     requestAnimationFrame(frame);
   }
   sizeDust();
-  window.addEventListener('resize', sizeDust);
+  let dustWidth = dust.clientWidth;
+  window.addEventListener('resize', () => { if (dust.clientWidth !== dustWidth) { dustWidth = dust.clientWidth; sizeDust(); } });
   new IntersectionObserver(([e]) => {
     const was = running;
     running = e.isIntersecting;
@@ -176,8 +201,10 @@ document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('clic
   state.move = 'attack';
   renderViewer();
   dialog.showModal();
+  if (lenis) lenis.stop();
 }));
 document.getElementById('viewer-close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('close', () => { if (lenis) lenis.start(); });
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
