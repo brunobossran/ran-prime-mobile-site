@@ -326,6 +326,42 @@ const PROBLEMS = {
   'f-consent': 'Tick the box so we can email you about the test.',
 };
 
+// Extra email checks before anything is sent: Gmail's naming rules, common domain typos, and whether the
+// email's domain exists (asks Google Public DNS; only the part after @ is sent). Real addresses always pass.
+const TYPOS = {
+  'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gnail.com': 'gmail.com',
+  'gmaill.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.cm': 'gmail.com', 'gmail.om': 'gmail.com',
+  'icloud.co': 'icloud.com', 'icloud.con': 'icloud.com', 'iclod.com': 'icloud.com', 'icould.com': 'icloud.com',
+};
+const KNOWN_DOMAINS = ['gmail.com', 'googlemail.com', 'icloud.com', 'me.com', 'mac.com', 'yahoo.com', 'outlook.com', 'hotmail.com'];
+
+function emailProblem(email) {
+  const [user, domain] = email.toLowerCase().split('@');
+  if (TYPOS[domain]) return `Did you mean ${user}@${TYPOS[domain]}? Check your email and try again.`;
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    const letters = user.replace(/\./g, '');
+    if (!/^[a-z0-9][a-z0-9.]*$/.test(user) || /\.\.|\.$/.test(user) || letters.length < 6 || letters.length > 30) {
+      return "That isn't a real Gmail address. Gmail names are 6 to 30 letters, numbers or dots. Check it and try again.";
+    }
+  }
+  return '';
+}
+
+// True only when DNS says the domain can't receive email. If the check itself fails, the sign-up goes through.
+async function domainMissing(domain) {
+  if (KNOWN_DOMAINS.includes(domain)) return false;
+  const ask = async (type) => (await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=${type}`, { signal: AbortSignal.timeout(4000) })).json();
+  try {
+    const mx = await ask('MX');
+    if (mx.Status === 3) return true;
+    if (mx.Status !== 0 || (mx.Answer || []).length) return false;
+    const a = await ask('A');
+    return a.Status === 3 || (a.Status === 0 && !(a.Answer || []).length);
+  } catch (err) {
+    return false;
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!form.checkValidity()) {
@@ -333,6 +369,15 @@ form.addEventListener('submit', async (e) => {
     const emailTypo = bad.type === 'email' && bad.value;
     say(emailTypo ? 'That email address doesn\'t look right. Check it and try again.' : PROBLEMS[bad.id] || 'Fill in the highlighted field.', 'err');
     bad.focus();
+    return;
+  }
+  const emailInput = form.querySelector('input[name="email"]:not(:disabled)');
+  const email = emailInput.value.trim().toLowerCase();
+  const domain = email.split('@')[1];
+  const problem = emailProblem(email);
+  if (problem) {
+    say(problem, 'err');
+    emailInput.focus();
     return;
   }
   if (!FORM_ENDPOINT) {
@@ -343,9 +388,19 @@ form.addEventListener('submit', async (e) => {
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
+    if (await domainMissing(domain)) {
+      say(`We couldn't find the email provider "@${domain}". Check your email and try again.`, 'err');
+      emailInput.focus();
+      return;
+    }
     // text/plain keeps this a "simple" request, which Google Apps Script accepts without a CORS preflight.
     const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
     const res = await r.json();
+    if (!res.ok && res.error === 'email') {
+      say("That email address doesn't look right. Check it and try again.", 'err');
+      emailInput.focus();
+      return;
+    }
     if (!res.ok) throw new Error(res.error || r.status);
     const ios = data.platform === 'ios';
     form.reset();
