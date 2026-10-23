@@ -194,16 +194,36 @@ document.getElementById('viewer-close').addEventListener('click', () => dialog.c
 dialog.addEventListener('close', () => { if (lenis) lenis.start(); });
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
-// Character loops: each character is an animated WebP (one idle cycle, then an attack) with a transparent background,
-// laid over its still render. Animated images play everywhere without autoplay rules, so the motion can't be blocked.
+// Character loops: each character is a short pre-rendered video with a transparent background (WebM for Chrome,
+// Android and Firefox; HEVC .mov for Safari and iPhones), laid over its still render. If a browser won't play the
+// video (autoplay blocked, or animations turned off on the phone), the same loop is shown as an animated WebP instead.
 // The hero loads right away; a class loads when it's first shown in the carousel.
-function playLoop(slot) {
-  if (slot.querySelector('.loop')) return;
+const loopExt = /Apple/.test(navigator.vendor) ? 'mov' : 'webm';
+function fallbackLoop(slot) {
+  const v = slot.querySelector('video.loop');
+  if (v) v.remove();
+  if (slot.querySelector('img.loop')) return;
   const im = new Image();
   im.className = 'loop'; im.alt = ''; im.decoding = 'async';
   im.onload = () => slot.classList.add('is-playing');
   im.src = `assets/anim/${slot.dataset.loop}.webp`;
   slot.append(im);
+}
+function playLoop(slot) {
+  if (slot.querySelector('.loop')) return;
+  if (reduceMotion) { fallbackLoop(slot); return; }
+  const v = document.createElement('video');
+  v.className = 'loop';
+  v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+  v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+  v.addEventListener('playing', () => slot.classList.add('is-playing'), { once: true });
+  v.addEventListener('error', () => fallbackLoop(slot), { once: true });
+  v.src = `assets/video/${slot.dataset.loop}.${loopExt}`;
+  slot.append(v);
+  const p = v.play();
+  if (p) p.catch(() => fallbackLoop(slot));
+  // still not playing a few seconds later (e.g. stalled by a power saver): use the animated image
+  setTimeout(() => { if (!slot.classList.contains('is-playing')) fallbackLoop(slot); }, 6000);
 }
 const startHero = () => document.querySelectorAll('.char[data-loop]').forEach(playLoop);
 if (document.readyState === 'complete') startHero(); else window.addEventListener('load', startHero);
