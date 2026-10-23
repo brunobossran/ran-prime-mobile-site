@@ -26,6 +26,7 @@ const picks = [...document.querySelectorAll('#cls-nav button')];
 const prev = document.getElementById('cls-prev');
 const next = document.getElementById('cls-next');
 let current = -1;
+let onClassChange = null; // set by the live 3D section below
 
 function showClass(i) {
   track.scrollTo({ left: slides[i].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -42,6 +43,7 @@ function markClass(i) {
   next.disabled = i === slides.length - 1;
   const nav = picks[i].parentElement;
   nav.scrollTo({ left: picks[i].offsetLeft - (nav.clientWidth - picks[i].offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+  if (onClassChange) onClassChange(i);
 }
 let trackTicking = false;
 track.addEventListener('scroll', () => {
@@ -111,12 +113,24 @@ if (dust && !reduceMotion) {
   }).observe(dust);
 }
 
-// 3D viewer: a dialog with the class model. model-viewer (and the 2–3 MB models) only load when it's first opened.
+// model-viewer is loaded once, after the page itself has loaded; the live characters and the 3D dialog both use it.
+let mvReady = null;
+function loadModelViewer() {
+  if (!mvReady) {
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
+    document.head.append(s);
+    mvReady = customElements.whenDefined('model-viewer');
+  }
+  return mvReady;
+}
+
+// 3D viewer: a dialog with the class model to rotate and try each move.
 const dialog = document.getElementById('viewer');
 const mv = document.getElementById('mv');
 const moves = document.getElementById('moves');
 const state = { cls: 'gunner', move: 'attack' };
-let viewerLoaded = false;
 
 // Models are plain .glb files on the live site. The preview build ships them as base64 .glb.txt instead.
 const modelCache = {};
@@ -125,11 +139,12 @@ function modelUrl(id) {
     modelCache[id] = fetch(`assets/models/${id}.glb`, { method: 'HEAD' })
       .then((r) => { if (!r.ok) throw new Error('no glb'); return `assets/models/${id}.glb`; })
       .catch(() => fetch(`assets/models/${id}.glb.txt`).then(async (r) => {
+        if (!r.ok) throw new Error('no glb.txt');
         const bin = atob((await r.text()).replace(/\s+/g, ''));
         const bytes = new Uint8Array(bin.length);
         for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
         return URL.createObjectURL(new Blob([bytes], { type: 'model/gltf-binary' }));
-      }));
+      }).catch(() => `assets/models/${id}.glb`));
   }
   return modelCache[id];
 }
@@ -168,13 +183,7 @@ mv.addEventListener('load', () => {
 });
 
 document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
-  if (!viewerLoaded) {
-    viewerLoaded = true;
-    const s = document.createElement('script');
-    s.type = 'module';
-    s.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
-    document.head.append(s);
-  }
+  loadModelViewer();
   state.cls = b.dataset.view;
   state.move = 'attack';
   renderViewer();
@@ -184,6 +193,91 @@ document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('clic
 document.getElementById('viewer-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('close', () => { if (lenis) lenis.start(); });
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+
+// Live characters: the hero Gunners and the class on screen are animated 3D models. Each slot shows its still render
+// first; the model fades in over it once loaded, idles, and throws an attack every few seconds.
+// model-viewer stops drawing a model that's off screen, so only what you can see costs anything.
+const FIT = { gunner: 0.895, 'gunner-female': 0.895, brawler: 0.815, swordsman: 0.715, archer: 0.818, shaman: 0.828, extreme: 0.713 };
+function makeLiveModel() {
+  const el = document.createElement('model-viewer');
+  el.className = 'live-model';
+  el.setAttribute('aria-hidden', 'true');
+  el.setAttribute('interaction-prompt', 'none');
+  el.setAttribute('disable-zoom', '');
+  el.setAttribute('shadow-intensity', '0');
+  el.setAttribute('exposure', '1.15');
+  el.setAttribute('tone-mapping', 'neutral');
+  el.setAttribute('environment-image', 'neutral');
+  el.setAttribute('min-field-of-view', '10deg');
+  el.setAttribute('max-camera-orbit', 'auto auto 1000m');
+  el.setAttribute('loading', 'eager');
+  const life = { timer: 0, attacks: [] };
+  // Camera framed from the model's own size: feet on the bottom edge. Each model's bounding box includes weapon parts,
+  // so FIT (measured share of the frame the figure fills at the base framing) evens out how big each character looks.
+  function frame() {
+    const d = el.getDimensions(), c = el.getBoundingBoxCenter();
+    const fit = FIT[el.dataset.id] || 0.85;
+    const span = (d.y / 0.9) * (fit / 0.87), fov = 16;
+    const radius = (span / 2) / Math.tan((fov * Math.PI) / 360);
+    el.fieldOfView = `${fov}deg`;
+    el.cameraTarget = `${c.x}m ${c.y - d.y / 2 + span / 2 - span * 0.01}m ${c.z}m`;
+    el.cameraOrbit = `15deg 88deg ${radius}m`;
+    el.jumpCameraToGoal();
+  }
+  function idle() {
+    clearTimeout(life.timer);
+    el.animationName = 'idle';
+    el.play();
+    if (life.attacks.length) life.timer = setTimeout(attack, 3500 + Math.random() * 2500);
+  }
+  function attack() {
+    el.animationName = life.attacks[Math.floor(Math.random() * life.attacks.length)];
+    el.play({ repetitions: 1 });
+  }
+  el.addEventListener('finished', idle);
+  el.addEventListener('load', () => {
+    life.attacks = el.availableAnimations.filter((a) => a.startsWith('attack'));
+    frame();
+    idle();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.classList.add('ready');
+      el.parentElement.classList.add('is-live');
+    }));
+  });
+  el.show = async (slot, id) => {
+    clearTimeout(life.timer);
+    el.classList.remove('ready');
+    if (el.parentElement && el.parentElement !== slot) el.parentElement.classList.remove('is-live');
+    slot.append(el);
+    el.dataset.id = id;
+    const url = await modelUrl(id);
+    if (el.getAttribute('src') === url) { el.classList.add('ready'); slot.classList.add('is-live'); idle(); }
+    else el.setAttribute('src', url);
+  };
+  return el;
+}
+
+if (!reduceMotion && 'IntersectionObserver' in window) {
+  const startLive = () => loadModelViewer().then(() => {
+    document.querySelectorAll('.char[data-model]').forEach((slot) => makeLiveModel().show(slot, slot.dataset.model));
+  });
+  if (document.readyState === 'complete') startLive();
+  else window.addEventListener('load', startLive);
+
+  // One live model for the classes carousel; it moves to whichever class is showing once a swipe settles
+  let classModel = null, settle = 0;
+  const placeClassModel = (i) => classModel.show(slides[i].querySelector('.cls-art'), slides[i].dataset.id);
+  const liveIo = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    liveIo.disconnect();
+    loadModelViewer().then(() => {
+      classModel = makeLiveModel();
+      placeClassModel(current);
+      onClassChange = (i) => { clearTimeout(settle); settle = setTimeout(() => placeClassModel(i), 180); };
+    });
+  }, { rootMargin: '-15% 0px' });
+  liveIo.observe(document.getElementById('classes'));
+}
 
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
 const sticky = document.getElementById('sticky-cta');
