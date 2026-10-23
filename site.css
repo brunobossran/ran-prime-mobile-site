@@ -81,13 +81,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .char { position: absolute; bottom: 0; }
 .char > img { display: block; height: 100%; width: auto; }
 .char-front { left: 0; right: 0; width: fit-content; margin: 0 auto; height: 100%; animation: rise 1.1s cubic-bezier(.2, .7, .2, 1) both; }
-/* Character loops: a short pre-rendered video with a transparent background plays over the still render.
+/* Character loops: an animated WebP with a transparent background plays over the still render.
    Its first frame is the still, so it fades in without a jump; --l/--w/--b/--h place it relative to the still
-   (the video is wider and taller where weapons swing past the figure). */
-.char > video, .fig > video { position: absolute; left: calc(var(--l) * 100%); width: calc(var(--w) * 100%); bottom: calc(var(--b) * 100%); height: calc(var(--h) * 100%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
-.char > img, .fig > img { transition: opacity 0s linear .25s; }
-.is-playing > video { opacity: 1; }
-.is-playing > img { opacity: 0; }
+   (the loop is wider and taller where weapons swing past the figure). */
+.char > .loop, .fig > .loop { position: absolute; left: calc(var(--l) * 100%); width: calc(var(--w) * 100%); bottom: calc(var(--b) * 100%); height: calc(var(--h) * 100%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+.char > img:not(.loop), .fig > img:not(.loop) { transition: opacity 0s linear .25s; }
+.is-playing > .loop { opacity: 1; }
+.is-playing > img:not(.loop) { opacity: 0; }
 .duo::after { content: ""; position: absolute; left: 8%; right: 4%; bottom: -10px; height: 26px; background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 0, 0, .85), transparent 70%); z-index: -1; }
 @keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }

@@ -194,46 +194,25 @@ document.getElementById('viewer-close').addEventListener('click', () => dialog.c
 dialog.addEventListener('close', () => { if (lenis) lenis.start(); });
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
-// Character loops: each character is a short pre-rendered video with a transparent background (WebM for Chrome,
-// Android and Firefox; HEVC .mov for Safari and iPhones, which can't show WebM transparency). The still render
-// shows until the video plays. The hero plays right away; in the classes carousel only the class on screen plays.
-// Skipped only for reduced motion.
-const loopsOn = !reduceMotion;
-const loopExt = /Apple/.test(navigator.vendor) ? 'mov' : 'webm';
+// Character loops: each character is an animated WebP (one idle cycle, then an attack) with a transparent background,
+// laid over its still render. Animated images play everywhere without autoplay rules, so the motion can't be blocked.
+// The hero loads right away; a class loads when it's first shown in the carousel.
 function playLoop(slot) {
-  let v = slot.querySelector('video');
-  if (!v) {
-    v = document.createElement('video');
-    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
-    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
-    v.addEventListener('playing', () => slot.classList.add('is-playing'));
-    v.src = `assets/video/${slot.dataset.loop}.${loopExt}`;
-    slot.append(v);
-  }
-  const p = v.play();
-  // If the browser blocks autoplay (some do, even for muted video), start on the first touch, scroll or click
-  if (p) p.catch(() => {
-    const retry = () => { v.play().catch(() => {}); ['touchstart', 'scroll', 'click'].forEach((t) => window.removeEventListener(t, retry)); };
-    ['touchstart', 'scroll', 'click'].forEach((t) => window.addEventListener(t, retry, { passive: true }));
-  });
+  if (slot.querySelector('.loop')) return;
+  const im = new Image();
+  im.className = 'loop'; im.alt = ''; im.decoding = 'async';
+  im.onload = () => slot.classList.add('is-playing');
+  im.src = `assets/anim/${slot.dataset.loop}.webp`;
+  slot.append(im);
 }
-function pauseLoop(slot) { const v = slot.querySelector('video'); if (v) v.pause(); }
-
-if (loopsOn && 'IntersectionObserver' in window) {
-  const heroSlots = [...document.querySelectorAll('.char[data-loop]')];
-  let heroSeen = true;
-  const startHero = () => { if (heroSeen) heroSlots.forEach(playLoop); };
-  if (document.readyState === 'complete') startHero(); else window.addEventListener('load', startHero);
-  new IntersectionObserver(([e]) => {
-    heroSeen = e.isIntersecting;
-    heroSlots.forEach(heroSeen ? playLoop : pauseLoop);
-  }).observe(document.querySelector('.hero'));
-
+const startHero = () => document.querySelectorAll('.char[data-loop]').forEach(playLoop);
+if (document.readyState === 'complete') startHero(); else window.addEventListener('load', startHero);
+if ('IntersectionObserver' in window) {
   const figs = slides.map((sl) => sl.querySelector('.fig'));
   let clsSeen = false, settle = 0;
-  const syncClasses = () => figs.forEach((f, j) => (clsSeen && j === current ? playLoop(f) : pauseLoop(f)));
-  onClassChange = () => { clearTimeout(settle); settle = setTimeout(syncClasses, 150); };
-  new IntersectionObserver(([e]) => { clsSeen = e.isIntersecting; syncClasses(); }, { rootMargin: '-10% 0px' })
+  const loadCurrent = () => { if (clsSeen) playLoop(figs[current]); };
+  onClassChange = () => { clearTimeout(settle); settle = setTimeout(loadCurrent, 150); };
+  new IntersectionObserver(([e]) => { clsSeen = e.isIntersecting; loadCurrent(); }, { rootMargin: '-10% 0px' })
     .observe(document.getElementById('classes'));
 }
 
