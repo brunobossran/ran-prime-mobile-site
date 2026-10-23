@@ -1,6 +1,6 @@
 // The Google Apps Script web app URL from test-list/SETUP.md (ends in /exec).
 // While it's empty, the form explains that sign-up opens soon and sends nothing.
-const FORM_ENDPOINT = '';
+const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzmSpeKMghGIt9oRUD5Ro8K1KBUIUfeSnjgk2xADtQuiINCsxrBXgHHX2fnzTb9fbvDvA/exec';
 
 const MOVES = [['attack', 'Attack 1'], ['attack2', 'Attack 2'], ['attack3', 'Attack 3'], ['idle', 'Idle'], ['run', 'Run']];
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
