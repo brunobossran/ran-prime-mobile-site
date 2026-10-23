@@ -65,15 +65,21 @@
     <canvas class="dust" id="dust" aria-hidden="true"></canvas>
     <div class="duo" aria-hidden="true">
       <i class="floor"></i>
-      <div class="char char-back" data-model="gunner-female"><img src="assets/renders/hd/gunner-female.png" alt="" width="435" height="1000" fetchpriority="high"></div>
-      <div class="char char-front" data-model="gunner"><img src="assets/renders/hd/gunner.png" alt="" width="615" height="1000" fetchpriority="high"></div>
+      <div class="char char-back" data-loop="gunner-female" style="--l:-0.0789;--w:1.0951;--b:-0.003;--h:1.009"><img src="assets/renders/hd/gunner-female.png" alt="" width="431" height="1003" fetchpriority="high"></div>
+      <div class="char char-front" data-loop="gunner" style="--l:-0.3672;--w:1.5508;--b:-0.004;--h:1.2238"><img src="assets/renders/hd/gunner.png" alt="" width="463" height="992" fetchpriority="high"></div>
     </div>
     <div class="hero-copy wrap">
       <a class="live" href="#test"><i aria-hidden="true"></i>Now testing on phones</a>
       <h1 id="hero-title"><span class="sr-only">RAN - Prime Dev Mobile</span><svg class="lockup" viewBox="20 60 1038 299" aria-hidden="true"><use href="#logoB2"/></svg></h1>
       <p class="hero-line">Classic EP7. Built for your phone.</p>
       <a class="btn btn-primary btn-wide" href="#signup">Join the test list</a>
-      <p class="stores">Coming soon to <span><svg aria-hidden="true"><use href="#i-apple"/></svg>App Store</span> and <span><svg aria-hidden="true"><use href="#i-play"/></svg>Google Play</span></p>
+      <div class="stores">
+        <p id="stores-label">Coming soon to</p>
+        <div class="badges" aria-describedby="stores-label">
+          <img src="assets/icons/badge-appstore.svg" width="120" height="40" alt="Download on the App Store, coming soon">
+          <img src="assets/icons/badge-googleplay.png" width="564" height="168" alt="Get it on Google Play, coming soon">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -83,7 +89,7 @@
     <div class="cls-viewport">
       <div class="cls-track" id="cls-track" tabindex="0" aria-label="Classes. Swipe or use the arrows to see each one.">
         <article class="cls" data-id="brawler">
-          <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><img src="assets/renders/hd/brawler.png" alt="The Brawler class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><span class="fig" data-loop="brawler" style="--l:-0.7492;--w:2.5714;--b:-0.0041;--h:1.0346"><img src="assets/renders/hd/brawler.png" alt="The Brawler class" width="315" height="723" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Close quarters, gauntlets</p>
             <p class="cls-tag">Make every hit count.</p>
@@ -92,7 +98,7 @@
           </div>
         </article>
         <article class="cls" data-id="swordsman">
-          <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><img src="assets/renders/hd/swordsman.png" alt="The Swordsman class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><span class="fig" data-loop="swordsman" style="--l:-2.098;--w:4.4314;--b:-0.172;--h:1.8713"><img src="assets/renders/hd/swordsman.png" alt="The Swordsman class" width="306" height="715" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Melee, sword</p>
             <p class="cls-tag">Meet the fight head-on.</p>
@@ -101,7 +107,7 @@
           </div>
         </article>
         <article class="cls" data-id="archer">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><img src="assets/renders/hd/archer.png" alt="The Archer class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><span class="fig" data-loop="archer" style="--l:-0.1385;--w:1.1432;--b:-0.0108;--h:1.5027"><img src="assets/renders/hd/archer.png" alt="The Archer class" width="859" height="744" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Ranged, bow</p>
             <p class="cls-tag">Find your distance.</p>
@@ -110,7 +116,7 @@
           </div>
         </article>
         <article class="cls" data-id="shaman">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><img src="assets/renders/hd/shaman.png" alt="The Shaman class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><span class="fig" data-loop="shaman" style="--l:-1.5085;--w:2.767;--b:-0.0197;--h:1.0479"><img src="assets/renders/hd/shaman.png" alt="The Shaman class" width="352" height="710" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Staff and spells</p>
             <p class="cls-tag">Bring a different power.</p>
@@ -119,7 +125,7 @@
           </div>
         </article>
         <article class="cls" data-id="extreme">
-          <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><img src="assets/renders/hd/extreme.png" alt="The Extreme class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><span class="fig" data-loop="extreme" style="--l:-2.2162;--w:4.5878;--b:-0.1748;--h:1.8769"><img src="assets/renders/hd/extreme.png" alt="The Extreme class" width="296" height="715" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Versatile, sword</p>
             <p class="cls-tag">Explore another path.</p>
@@ -128,7 +134,7 @@
           </div>
         </article>
         <article class="cls" data-id="gunner">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><img src="assets/renders/hd/gunner.png" alt="The Gunner class" loading="lazy" decoding="async"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><span class="fig" data-loop="gunner" style="--l:-0.3672;--w:1.5508;--b:-0.004;--h:1.2238"><img src="assets/renders/hd/gunner.png" alt="The Gunner class" width="463" height="992" loading="lazy" decoding="async"></span></div>
           <div class="cls-text">
             <p class="cls-meta">Firearms, dual guns</p>
             <p class="cls-tag">Change the pace.</p>

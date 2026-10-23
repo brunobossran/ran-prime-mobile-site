@@ -26,7 +26,7 @@ const picks = [...document.querySelectorAll('#cls-nav button')];
 const prev = document.getElementById('cls-prev');
 const next = document.getElementById('cls-next');
 let current = -1;
-let onClassChange = null; // set by the live 3D section below
+let onClassChange = null; // set by the character loops section below
 
 function showClass(i) {
   track.scrollTo({ left: slides[i].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -113,7 +113,7 @@ if (dust && !reduceMotion) {
   }).observe(dust);
 }
 
-// model-viewer is loaded once, after the page itself has loaded; the live characters and the 3D dialog both use it.
+// model-viewer loads the first time someone opens the 3D dialog.
 let mvReady = null;
 function loadModelViewer() {
   if (!mvReady) {
@@ -194,89 +194,42 @@ document.getElementById('viewer-close').addEventListener('click', () => dialog.c
 dialog.addEventListener('close', () => { if (lenis) lenis.start(); });
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
-// Live characters: the hero Gunners and the class on screen are animated 3D models. Each slot shows its still render
-// first; the model fades in over it once loaded, idles, and throws an attack every few seconds.
-// model-viewer stops drawing a model that's off screen, so only what you can see costs anything.
-const FIT = { gunner: 0.895, 'gunner-female': 0.895, brawler: 0.815, swordsman: 0.715, archer: 0.818, shaman: 0.828, extreme: 0.713 };
-function makeLiveModel() {
-  const el = document.createElement('model-viewer');
-  el.className = 'live-model';
-  el.setAttribute('aria-hidden', 'true');
-  el.setAttribute('interaction-prompt', 'none');
-  el.setAttribute('disable-zoom', '');
-  el.setAttribute('shadow-intensity', '0');
-  el.setAttribute('exposure', '1.15');
-  el.setAttribute('tone-mapping', 'neutral');
-  el.setAttribute('environment-image', 'neutral');
-  el.setAttribute('min-field-of-view', '10deg');
-  el.setAttribute('max-camera-orbit', 'auto auto 1000m');
-  el.setAttribute('loading', 'eager');
-  const life = { timer: 0, attacks: [] };
-  // Camera framed from the model's own size: feet on the bottom edge. Each model's bounding box includes weapon parts,
-  // so FIT (measured share of the frame the figure fills at the base framing) evens out how big each character looks.
-  function frame() {
-    const d = el.getDimensions(), c = el.getBoundingBoxCenter();
-    const fit = FIT[el.dataset.id] || 0.85;
-    const span = (d.y / 0.9) * (fit / 0.87), fov = 16;
-    const radius = (span / 2) / Math.tan((fov * Math.PI) / 360);
-    el.fieldOfView = `${fov}deg`;
-    el.cameraTarget = `${c.x}m ${c.y - d.y / 2 + span / 2 - span * 0.01}m ${c.z}m`;
-    el.cameraOrbit = `15deg 88deg ${radius}m`;
-    el.jumpCameraToGoal();
+// Character loops: each character is a short pre-rendered video with a transparent background (WebM for Chrome,
+// Android and Firefox; HEVC .mov for Safari and iPhones, which can't show WebM transparency). The still render
+// shows until the video plays. The hero plays right away; in the classes carousel only the class on screen plays.
+// Skipped for reduced motion and for Data Saver.
+const loopsOn = !reduceMotion && !(navigator.connection && navigator.connection.saveData);
+const loopExt = /Apple/.test(navigator.vendor) ? 'mov' : 'webm';
+function playLoop(slot) {
+  let v = slot.querySelector('video');
+  if (!v) {
+    v = document.createElement('video');
+    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+    v.addEventListener('playing', () => slot.classList.add('is-playing'));
+    v.src = `assets/video/${slot.dataset.loop}.${loopExt}`;
+    slot.append(v);
   }
-  function idle() {
-    clearTimeout(life.timer);
-    el.animationName = 'idle';
-    el.play();
-    if (life.attacks.length) life.timer = setTimeout(attack, 3500 + Math.random() * 2500);
-  }
-  function attack() {
-    el.animationName = life.attacks[Math.floor(Math.random() * life.attacks.length)];
-    el.play({ repetitions: 1 });
-  }
-  el.addEventListener('finished', idle);
-  el.addEventListener('load', () => {
-    life.attacks = el.availableAnimations.filter((a) => a.startsWith('attack'));
-    frame();
-    idle();
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      el.classList.add('ready');
-      el.parentElement.classList.add('is-live');
-    }));
-  });
-  el.show = async (slot, id) => {
-    clearTimeout(life.timer);
-    el.classList.remove('ready');
-    if (el.parentElement && el.parentElement !== slot) el.parentElement.classList.remove('is-live');
-    slot.append(el);
-    el.dataset.id = id;
-    const url = await modelUrl(id);
-    if (el.getAttribute('src') === url) { el.classList.add('ready'); slot.classList.add('is-live'); idle(); }
-    else el.setAttribute('src', url);
-  };
-  return el;
+  const p = v.play(); if (p) p.catch(() => {});
 }
+function pauseLoop(slot) { const v = slot.querySelector('video'); if (v) v.pause(); }
 
-if (!reduceMotion && 'IntersectionObserver' in window) {
-  const startLive = () => loadModelViewer().then(() => {
-    document.querySelectorAll('.char[data-model]').forEach((slot) => makeLiveModel().show(slot, slot.dataset.model));
-  });
-  if (document.readyState === 'complete') startLive();
-  else window.addEventListener('load', startLive);
+if (loopsOn && 'IntersectionObserver' in window) {
+  const heroSlots = [...document.querySelectorAll('.char[data-loop]')];
+  let heroSeen = true;
+  const startHero = () => { if (heroSeen) heroSlots.forEach(playLoop); };
+  if (document.readyState === 'complete') startHero(); else window.addEventListener('load', startHero);
+  new IntersectionObserver(([e]) => {
+    heroSeen = e.isIntersecting;
+    heroSlots.forEach(heroSeen ? playLoop : pauseLoop);
+  }).observe(document.querySelector('.hero'));
 
-  // One live model for the classes carousel; it moves to whichever class is showing once a swipe settles
-  let classModel = null, settle = 0;
-  const placeClassModel = (i) => classModel.show(slides[i].querySelector('.cls-art'), slides[i].dataset.id);
-  const liveIo = new IntersectionObserver(([e]) => {
-    if (!e.isIntersecting) return;
-    liveIo.disconnect();
-    loadModelViewer().then(() => {
-      classModel = makeLiveModel();
-      placeClassModel(current);
-      onClassChange = (i) => { clearTimeout(settle); settle = setTimeout(() => placeClassModel(i), 180); };
-    });
-  }, { rootMargin: '-15% 0px' });
-  liveIo.observe(document.getElementById('classes'));
+  const figs = slides.map((sl) => sl.querySelector('.fig'));
+  let clsSeen = false, settle = 0;
+  const syncClasses = () => figs.forEach((f, j) => (clsSeen && j === current ? playLoop(f) : pauseLoop(f)));
+  onClassChange = () => { clearTimeout(settle); settle = setTimeout(syncClasses, 150); };
+  new IntersectionObserver(([e]) => { clsSeen = e.isIntersecting; syncClasses(); }, { rootMargin: '-10% 0px' })
+    .observe(document.getElementById('classes'));
 }
 
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
