@@ -118,26 +118,54 @@
           <p class="kicker" style="margin-bottom:6px">Test list</p>
           <h3>Get early access</h3>
         </div>
+        <fieldset class="platform">
+          <legend>Your phone</legend>
+          <div class="seg">
+            <input type="radio" name="platform" id="p-android" value="android" checked>
+            <label for="p-android"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.5 11.5 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>Android</label>
+            <input type="radio" name="platform" id="p-ios" value="ios">
+            <label for="p-ios"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.4-.6 3.1-1.5z"/></svg>iPhone / iPad</label>
+          </div>
+        </fieldset>
         <label for="f-name">Facebook name
           <input id="f-name" name="name" autocomplete="nickname" required maxlength="60">
         </label>
-        <label for="f-email">Email
-          <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="120">
-        </label>
-        <div class="row2">
-          <label for="f-os">Phone
-            <select id="f-os" name="os" required>
-              <option value="">Choose one</option>
-              <option>Android</option>
-              <option>iPhone</option>
-              <option>iPad / tablet</option>
-            </select>
+        <div class="group" data-platform="android">
+          <label for="f-a-email">Google account email
+            <input id="f-a-email" name="email" type="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" inputmode="email" autocomplete="email" required maxlength="120" placeholder="name@gmail.com">
+            <small>The Gmail signed in to the Play Store on your phone. Google Play only lets us invite testers by this email.</small>
           </label>
-          <label for="f-model">Model
-            <input id="f-model" name="model" placeholder="e.g. Redmi Note 13" maxlength="60">
-          </label>
+          <div class="row2">
+            <label for="f-a-model">Phone model
+              <input id="f-a-model" name="model" required maxlength="60" placeholder="e.g. Redmi Note 13">
+            </label>
+            <label for="f-a-ver">Android version
+              <select id="f-a-ver" name="os_version" required>
+                <option value="">Choose one</option>
+                <option>16 or newer</option><option>15</option><option>14</option><option>13</option><option>12</option><option>11 or older</option><option>Not sure</option>
+              </select>
+            </label>
+          </div>
         </div>
-        <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required>
+        <div class="group" data-platform="ios" hidden>
+          <label for="f-i-email">Apple ID email
+            <input id="f-i-email" name="email" type="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" inputmode="email" autocomplete="email" required maxlength="120" placeholder="name@icloud.com" disabled>
+            <small>The email you use for the App Store. Your TestFlight invite goes here.</small>
+          </label>
+          <div class="row2">
+            <label for="f-i-model">iPhone or iPad model
+              <input id="f-i-model" name="model" required maxlength="60" placeholder="e.g. iPhone 13" disabled>
+            </label>
+            <label for="f-i-ver">iOS version
+              <select id="f-i-ver" name="os_version" required disabled>
+                <option value="">Choose one</option>
+                <option>iOS 26 or newer</option><option>iOS 18</option><option>iOS 17</option><option>iOS 16 or older</option><option>Not sure</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+        <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" value="yes" required>
           <span>Email me about the mobile test. I've read the <a href="privacy.html">privacy policy</a>.</span></label>
         <button class="btn btn-primary btn-block" type="submit">Join the test list</button>
         <p class="fine">Joining the list doesn't create a game account or guarantee a spot. We'll choose testers across many kinds of phones.</p>
@@ -189,6 +217,7 @@
       <div class="faq">
         <details><summary>Is this the same as the PC server?</summary><p>No. This is a new, separate server, and everyone starts at level 1. Looking for the PC version? Visit <a href="https://ep7.ranonlineofficial.com/" target="_blank" rel="noopener">ep7.ranonlineofficial.com</a>.</p></details>
         <details><summary>When can I play?</summary><p>We're building and testing now. The official announcement and test dates will come first on our Facebook page. Join the test list and we'll email you when testing opens.</p></details>
+        <details><summary>How will I get the test?</summary><p><b>Android:</b> we'll add your Google account to our Google Play test and email you a link. You install the game from the Play Store like any other app.</p><p><b>iPhone and iPad:</b> we'll send an invite to your Apple ID email. Install Apple's free TestFlight app, then open the invite to install the game.</p></details>
         <details><summary>Which phones will be supported?</summary><p>We're testing on a wide range of Android phones and iPhones, including older models. Add your phone model when you join the list so we can include it.</p></details>
         <details><summary>Is it free?</summary><p>Yes. RAN - Prime Dev Mobile is free to play.</p></details>
         <details><summary>Is this the official RAN Online?</summary><p>No. RAN - Prime Dev Mobile is made by Prime Developments, an independent team.</p></details>

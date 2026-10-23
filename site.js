@@ -1,4 +1,4 @@
-// Set this to a form endpoint that accepts a JSON POST (Formspree, a Google Apps Script web app, or dev's API).
+// The Google Apps Script web app URL from test-list/SETUP.md (ends in /exec).
 // While it's empty, the form explains that sign-up opens soon and sends nothing.
 const FORM_ENDPOINT = '';
 
@@ -105,16 +105,41 @@ if ('IntersectionObserver' in window) {
   io.observe(document.getElementById('signup'));
 }
 
-// Sign-up form
+// Sign-up form: Android and iPhone collect different emails (Google Play tests invite by Google account, TestFlight by Apple ID)
 const form = document.getElementById('signup');
 const msg = document.getElementById('form-msg');
 function say(text, kind) { msg.textContent = text; msg.className = `form-msg ${kind || ''}`; msg.hidden = false; }
 
+function platform() { return form.querySelector('input[name="platform"]:checked').value; }
+function showPlatform() {
+  const current = platform();
+  form.querySelectorAll('.group').forEach((g) => {
+    const on = g.dataset.platform === current;
+    g.hidden = !on;
+    g.querySelectorAll('input, select').forEach((el) => { el.disabled = !on; });
+  });
+  msg.hidden = true;
+}
+form.querySelectorAll('input[name="platform"]').forEach((r) => r.addEventListener('change', showPlatform));
+showPlatform();
+
+const PROBLEMS = {
+  'f-name': 'Enter your Facebook name.',
+  'f-a-email': 'Enter the Google account email from your Play Store.',
+  'f-i-email': 'Enter your Apple ID email.',
+  'f-a-model': 'Enter your phone model.',
+  'f-i-model': 'Enter your iPhone or iPad model.',
+  'f-a-ver': 'Choose your Android version.',
+  'f-i-ver': 'Choose your iOS version.',
+  'f-consent': 'Tick the box so we can email you about the test.',
+};
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!form.checkValidity()) {
-    const bad = form.querySelector(':invalid');
-    say(bad.type === 'email' ? 'Enter a valid email address.' : bad.type === 'checkbox' ? 'Tick the box so we can email you about the test.' : 'Fill in your name, email and phone.', 'err');
+    const bad = form.querySelector(':invalid:not(fieldset)');
+    const emailTypo = bad.type === 'email' && bad.value;
+    say(emailTypo ? 'That email address doesn\'t look right. Check it and try again.' : PROBLEMS[bad.id] || 'Fill in the highlighted field.', 'err');
     bad.focus();
     return;
   }
@@ -126,10 +151,18 @@ form.addEventListener('submit', async (e) => {
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
-    const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
-    if (!r.ok) throw new Error(r.status);
+    // text/plain keeps this a "simple" request, which Google Apps Script accepts without a CORS preflight.
+    const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
+    const res = await r.json();
+    if (!res.ok) throw new Error(res.error || r.status);
+    const ios = data.platform === 'ios';
     form.reset();
-    say("You're on the list. We'll email you when testing opens.", 'ok');
+    showPlatform();
+    say(res.duplicate
+      ? "You're already on the list. We'll be in touch when testing opens."
+      : ios
+        ? "You're on the list. When testing opens, your TestFlight invite goes to your Apple ID email."
+        : "You're on the list. When testing opens, we'll email your Google account a link to the Play Store test.", 'ok');
   } catch (err) {
     say("That didn't go through. Check your connection and try again, or message our Facebook page.", 'err');
   } finally {
