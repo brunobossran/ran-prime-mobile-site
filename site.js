@@ -197,8 +197,8 @@ dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(
 // Character loops: each character is a short pre-rendered video with a transparent background (WebM for Chrome,
 // Android and Firefox; HEVC .mov for Safari and iPhones, which can't show WebM transparency). The still render
 // shows until the video plays. The hero plays right away; in the classes carousel only the class on screen plays.
-// Skipped for reduced motion and for Data Saver.
-const loopsOn = !reduceMotion && !(navigator.connection && navigator.connection.saveData);
+// Skipped only for reduced motion.
+const loopsOn = !reduceMotion;
 const loopExt = /Apple/.test(navigator.vendor) ? 'mov' : 'webm';
 function playLoop(slot) {
   let v = slot.querySelector('video');
@@ -210,7 +210,12 @@ function playLoop(slot) {
     v.src = `assets/video/${slot.dataset.loop}.${loopExt}`;
     slot.append(v);
   }
-  const p = v.play(); if (p) p.catch(() => {});
+  const p = v.play();
+  // If the browser blocks autoplay (some do, even for muted video), start on the first touch, scroll or click
+  if (p) p.catch(() => {
+    const retry = () => { v.play().catch(() => {}); ['touchstart', 'scroll', 'click'].forEach((t) => window.removeEventListener(t, retry)); };
+    ['touchstart', 'scroll', 'click'].forEach((t) => window.addEventListener(t, retry, { passive: true }));
+  });
 }
 function pauseLoop(slot) { const v = slot.querySelector('video'); if (v) v.pause(); }
 
