@@ -183,9 +183,10 @@ dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
 const sticky = document.getElementById('sticky-cta');
 const form = document.getElementById('signup');
-const seen = { hero: true, form: false };
+const seen = { hero: true, form: false, story: false };
 function updateSticky() {
-  const show = !seen.hero && !seen.form;
+  // also hidden while a scroll story is pinned, so it doesn't cover the stage
+  const show = !seen.hero && !seen.form && !seen.story;
   sticky.classList.toggle('show', show);
   sticky.setAttribute('aria-hidden', String(!show));
   sticky.querySelector('a').tabIndex = show ? 0 : -1;
@@ -197,6 +198,13 @@ if ('IntersectionObserver' in window) {
   });
   io.observe(document.querySelector('.hero'));
   io.observe(form);
+  const inStory = new Set();
+  const storyIo = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) inStory.add(e.target); else inStory.delete(e.target); });
+    seen.story = inStory.size > 0;
+    updateSticky();
+  }, { rootMargin: '-50% 0px -50% 0px' });
+  stories.forEach((st) => storyIo.observe(st.el));
 }
 
 // Sign-up form: Android and iPhone collect different emails (Google Play tests invite by Google account, TestFlight by Apple ID)

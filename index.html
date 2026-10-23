@@ -60,29 +60,22 @@
 
 <main id="top">
   <section class="hero" aria-labelledby="hero-title">
-    <img class="hero-bg" src="assets/art/campus.png" alt="">
-    <div class="hero-light" aria-hidden="true"></div>
+    <div class="stage-bg" aria-hidden="true">
+      <i class="beam"></i>
+    </div>
     <canvas class="dust" id="dust" aria-hidden="true"></canvas>
     <div class="duo" aria-hidden="true">
-      <img class="duo-back" src="assets/renders/gunner-female-idle.png" alt="">
-      <img class="duo-front" src="assets/renders/gunner.png" alt="">
+      <i class="floor"></i>
+      <img class="duo-back" src="assets/renders/hd/gunner-female.png" alt="" width="435" height="1000" fetchpriority="high">
+      <img class="duo-front" src="assets/renders/hd/gunner.png" alt="" width="615" height="1000" fetchpriority="high">
     </div>
     <div class="hero-copy wrap">
+      <a class="live" href="#test"><i aria-hidden="true"></i>Now testing on phones</a>
       <h1 id="hero-title"><span class="sr-only">RAN - Prime Dev Mobile</span><svg class="lockup" viewBox="20 60 1038 299" aria-hidden="true"><use href="#logoB2"/></svg></h1>
       <p class="hero-line">Classic EP7. Built for your phone.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary btn-wide" href="#signup">Join the test list</a>
-        <div class="stores" aria-label="App stores">
-          <span class="store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span>App Store</span><em>Soon</em></span>
-          <span class="store"><svg aria-hidden="true"><use href="#i-play"/></svg><span>Google Play</span><em>Soon</em></span>
-        </div>
-      </div>
+      <a class="btn btn-primary btn-wide" href="#signup">Join the test list</a>
+      <p class="stores">Coming soon to <span><svg aria-hidden="true"><use href="#i-apple"/></svg>App Store</span> and <span><svg aria-hidden="true"><use href="#i-play"/></svg>Google Play</span></p>
     </div>
-    <a class="ticker" href="#test">
-      <b>Status</b>
-      <span>Now testing on phones</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
   </section>
 
   <!-- Scroll story 1: classic key art, shown whole (never cropped) so the artwork's logos and copyright stay intact -->
@@ -122,67 +115,67 @@
       <h2 class="sr-only" id="classes-title">Choose your class</h2>
       <div class="beats">
         <article class="beat cls" data-id="brawler">
-          <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><img src="assets/renders/brawler.png" alt="The Brawler class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><img src="assets/renders/hd/brawler.png" alt="The Brawler class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Close quarters, gauntlets</p>
             <p class="cls-tag">Make every hit count.</p>
             <p>Get close. Stand your ground. Fight with gauntlets and the unmistakable rhythm of RAN's hand-to-hand combat.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="brawler">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="brawler"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
         <article class="beat cls" data-id="swordsman">
-          <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><img src="assets/renders/swordsman.png" alt="The Swordsman class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><img src="assets/renders/hd/swordsman.png" alt="The Swordsman class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Melee, sword</p>
             <p class="cls-tag">Meet the fight head-on.</p>
             <p>Take up the blade and step into the front line with RAN's classic sword-wielding fighting style.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="swordsman">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="swordsman"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
         <article class="beat cls" data-id="archer">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><img src="assets/renders/archer.png" alt="The Archer class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><img src="assets/renders/hd/archer.png" alt="The Archer class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Ranged, bow</p>
             <p class="cls-tag">Find your distance.</p>
             <p>Choose your position and let the arrows fly with the familiar bow-wielding ranged class.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="archer">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="archer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
         <article class="beat cls" data-id="shaman">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><img src="assets/renders/shaman.png" alt="The Shaman class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><img src="assets/renders/hd/shaman.png" alt="The Shaman class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Staff and spells</p>
             <p class="cls-tag">Bring a different power.</p>
             <p>Wield a staff and explore RAN's spell-focused path. A familiar presence in party play.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="shaman">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="shaman"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
         <article class="beat cls" data-id="extreme">
-          <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><img src="assets/renders/extreme.png" alt="The Extreme class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><img src="assets/renders/hd/extreme.png" alt="The Extreme class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Versatile, sword</p>
             <p class="cls-tag">Explore another path.</p>
             <p>Discover the Extreme class with its original EP7 appearance.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="extreme">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="extreme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
         <article class="beat cls" data-id="gunner">
-          <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><img src="assets/renders/gunner.png" alt="The Gunner class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><img src="assets/renders/hd/gunner.png" alt="The Gunner class" loading="lazy"></div>
           <div class="cls-text">
             <p class="cls-meta">Firearms, dual guns</p>
             <p class="cls-tag">Change the pace.</p>
             <p>Take aim with the Gunner's original firearms, plus EP7's intelligence-build summon system.</p>
-            <button class="btn btn-ghost btn-small" type="button" data-view="gunner">Rotate in 3D</button>
+            <button class="btn btn-line" type="button" data-view="gunner"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
       </div>
       <nav class="cls-nav" id="cls-nav" aria-label="Jump to a class">
-        <button type="button">Brawler</button>
-        <button type="button">Swordsman</button>
-        <button type="button">Archer</button>
-        <button type="button">Shaman</button>
-        <button type="button">Extreme</button>
-        <button type="button">Gunner</button>
+        <button type="button"><span class="pt" style="--o:50.6% 12.9%;--t:-0.6%,23.5%;--s:3.57"><img src="assets/renders/brawler-idle.png" alt="" loading="lazy"></span>Brawler</button>
+        <button type="button"><span class="pt" style="--o:61.1% 35.4%;--t:-11.1%,1.0%;--s:4.88"><img src="assets/renders/swordsman-idle.png" alt="" loading="lazy"></span>Swordsman</button>
+        <button type="button"><span class="pt" style="--o:54.8% 49.7%;--t:-4.8%,-13.2%;--s:6.36"><img src="assets/renders/archer-idle.png" alt="" loading="lazy"></span>Archer</button>
+        <button type="button"><span class="pt" style="--o:47.0% 42.9%;--t:3.0%,-6.4%;--s:5.55"><img src="assets/renders/shaman-idle.png" alt="" loading="lazy"></span>Shaman</button>
+        <button type="button"><span class="pt" style="--o:60.9% 35.1%;--t:-10.9%,1.4%;--s:4.85"><img src="assets/renders/extreme-idle.png" alt="" loading="lazy"></span>Extreme</button>
+        <button type="button"><span class="pt" style="--o:53.7% 12.9%;--t:-3.7%,23.5%;--s:3.57"><img src="assets/renders/gunner-idle.png" alt="" loading="lazy"></span>Gunner</button>
       </nav>
     </div>
   </section>
@@ -269,7 +262,7 @@
         <details><summary>Is it free?</summary><p>Yes. RAN - Prime Dev Mobile is free to play.</p></details>
         <details><summary>Will there be paid guilds or bots?</summary><p>No paid guilds. Anti-bot and anti-cheat run from day one.</p></details>
         <details><summary>Is this the official RAN Online?</summary><p>No. RAN - Prime Dev Mobile is made by Prime Developments, an independent team.</p></details>
-        <details><summary>How do I contact you?</summary><p>Send us a message on our <a href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener">Facebook page</a>.</p></details>
+        <details><summary>How do I contact you?</summary><p>Email <a href="mailto:support@ranonlineofficial.com">support@ranonlineofficial.com</a> or send us a message on our <a href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener">Facebook page</a>.</p></details>
       </div>
     </div>
   </section>
@@ -307,6 +300,7 @@
     <nav aria-label="Footer">
       <a href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener">Facebook</a>
       <a href="privacy.html">Privacy policy</a>
+      <a class="mail" href="mailto:support@ranonlineofficial.com">support@ranonlineofficial.com</a>
       <a href="https://ep7.ranonlineofficial.com/" target="_blank" rel="noopener">PC server</a>
     </nav>
     <p>© 2026 Prime Developments. RAN Online and its characters and art belong to their respective owners. Prime Developments is an independent team and is not affiliated with the original publishers.</p>
