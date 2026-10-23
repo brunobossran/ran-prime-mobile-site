@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@50..125,300..800&family=Orbitron:wght@900&family=Michroma&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=15">
+<link rel="stylesheet" href="site.css?v=16">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -183,7 +183,8 @@
           </label>
           <div class="row2">
             <label for="f-a-model">Phone model
-              <input id="f-a-model" name="model" required maxlength="60" placeholder="e.g. Redmi Note 13">
+              <input id="f-a-model" name="model" data-models="android" required maxlength="60" placeholder="Type your phone, e.g. Redmi Note 13">
+              <small>Start typing, then tap your phone in the list.</small>
             </label>
             <label for="f-a-ver">Android version
               <select id="f-a-ver" name="os_version" required>
@@ -200,7 +201,8 @@
           </label>
           <div class="row2">
             <label for="f-i-model">iPhone or iPad model
-              <input id="f-i-model" name="model" required maxlength="60" placeholder="e.g. iPhone 13" disabled>
+              <input id="f-i-model" name="model" data-models="ios" required maxlength="60" placeholder="Type your model, e.g. iPhone 13" disabled>
+              <small>Start typing, then tap your model in the list.</small>
             </label>
             <label for="f-i-ver">iOS version
               <select id="f-i-ver" name="os_version" required disabled>
@@ -277,6 +279,7 @@
 </footer>
 
 <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="assets/phone-models.js?v=1"></script>
 <script src="site.js?v=15"></script>
 </body>
 </html>

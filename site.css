@@ -203,6 +203,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .signup .check a { color: var(--bone); }
 .signup small { font-size: 13px; line-height: 1.45; color: #7f7a70; }
 .signup .group { display: grid; gap: 16px; }
+/* Phone model picker (assets/phone-models.js): list under the field that narrows as you type */
+.model-pick { position: relative; }
+.model-list { position: absolute; z-index: 15; left: 0; right: 0; top: calc(100% + 4px); margin: 0; padding: 4px 0; list-style: none; overflow-y: auto; overscroll-behavior: contain; background: var(--char); border: 1px solid var(--gold); box-shadow: 0 14px 30px rgba(0, 0, 0, .6); }
+.model-list li { padding: 12px 14px; font-size: 16px; line-height: 1.25; color: var(--bone); cursor: pointer; }
+.model-list li[aria-selected="true"], .model-list li[role="option"]:hover { background: var(--gold); color: var(--gold-ink); }
+.model-list .model-brand { font-weight: 600; }
+.model-list .model-note { font-size: 13px; color: var(--ash); cursor: default; }
 .signup .group[hidden] { display: none; }
 .platform { border: 0; margin: 0; padding: 0; min-width: 0; }
 .platform legend { padding: 0; margin-bottom: 6px; font-size: 14px; color: var(--ash); }
