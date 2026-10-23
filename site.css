@@ -100,10 +100,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .lockup { display: block; width: min(68vw, 440px); aspect-ratio: 1038 / 299; overflow: visible; }
 .hero-line { margin: 10px 0 16px; font: 500 clamp(15px, 4.2vw, 21px)/1.25 var(--font); font-stretch: 75%; letter-spacing: .2em; text-transform: uppercase; color: rgba(239, 235, 227, .8); }
 .btn-wide { width: min(100%, 340px); }
-.stores { margin-top: 14px; }
-.stores p { margin: 0 0 8px; font-size: 11px; font-weight: 600; font-stretch: 85%; letter-spacing: .26em; text-transform: uppercase; color: var(--ash); }
-.badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.badges img { height: 42px; width: auto; }
+.stores { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 8px; margin: 12px 0 0; font-size: 13px; color: var(--ash); }
+.stores span { display: inline-flex; align-items: center; gap: 5px; color: rgba(239, 235, 227, .85); }
+.stores svg { width: 14px; height: 14px; }
 @media (min-width: 760px) {
   .hero { --duo-bottom: clamp(150px, 27vh, 260px); padding-bottom: 44px; }
   .duo { width: 500px; height: min(calc(100vh - var(--header) - var(--duo-bottom) - 8px), 600px); }
