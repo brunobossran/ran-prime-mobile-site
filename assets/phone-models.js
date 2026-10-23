@@ -15,7 +15,7 @@
     ['Redmi', 'xiaomi', 'Note 17 Pro Max|Note 17 Pro|Note 17 5G|Note 17|Note 17 4G|Note 15 Pro+ 5G|Note 15 Pro 5G|Note 15 Pro|Note 15 Pro 4G|Note 15 5G|Note 15|Note 15 4G|17|17 4G|17C|17C 4G|A7 Pro|A7|15C 4G|'
       + 'Note 14 Pro+ 5G|Note 14 Pro 5G|Note 14 Pro|Note 14 5G|Note 14|Note 13 Pro+ 5G|Note 13 Pro 5G|Note 13 Pro|Note 13 5G|Note 13|Note 12 Pro+ 5G|Note 12 Pro 5G|Note 12 Pro|Note 12S|Note 12 5G|'
       + 'Note 12|Note 11 Pro+ 5G|Note 11 Pro 5G|Note 11 Pro|Note 11S|Note 11|Note 10 Pro|Note 10S|Note 10 5G|Note 10|Note 9 Pro|Note 9S|Note 9|Note 8 Pro|Note 8 2021|Note 8|Note 7|15C|15 5G|15|14C|'
-      + '14 5G|13C 5G|13C|13|12C|12 5G|12|10C|10A|10 5G|10|9T|9C|9A|9|8A|8|A5|A3|A3x|A2+|A2|A1|Pad 2|Pad Pro|Pad SE'],
+      + '14 5G|13C 5G|13C|13|12C|12 5G|12|10C|10A|10 5G|10|9T|9C|9A|9|8A|8|A5|A3|A3x|A2+|A2|A1|Pad 2|Pad Pro|Pad SE|K90 Pro Max|K90|K80 Ultra|K80 Pro|K80|K70 Pro|K70|K60 Pro|K60|K50|K40 Pro|K40|K30 Pro|K30 5G|K30|K20 Pro|K20'],
     ['POCO', 'xiaomi', 'F9 Ultra|F9 Pro|F8 Ultra|F8 Pro|X8 Pro Max|X8 Pro|X8 Power|X8|M8 Pro|M8 Power|M8s|M8x|M8|M7 Plus|C95 Pro|C85x|C85 4G|C81 Pro|C81|C81x|F7 Ultra|F7 Pro|F7|F6 Pro|F6|F5 Pro|F5|F4 GT|F4|F3|'
       + 'F2 Pro|F1|X7 Pro|X7|X6 Pro|X6|X5 Pro|X5|X4 Pro 5G|X4 GT|X3 Pro|X3 NFC|X3 GT|M7 Pro 5G|M7|M6 Pro|M6|M5s|M5|M4 Pro|M4 5G|M3 Pro 5G|M3|C85|C75|C71|C65|C61|C55|C51|C40|C31|C3|Pad'],
     ['realme', 'real me', '16 Pro+|16 Pro|16|16T|16x|GT 8 Pro|15 Pro|15|15T|15x|15 Lite|Neo8|P4 Pro|P4 Power|P4|P4R|P4s|P4x|P4 Lite|C100|C100x|C100i|C85 Pro|C83|C73|Note 80|Note 70|Note 70T|GT 7 Pro|GT 7|GT 7T|GT 6|'
@@ -36,7 +36,7 @@
       + 'Xpad GT|GT 20 Pro|GT 10 Pro|Zero 40 5G|Zero Flip|Zero 30 5G|Zero 30|Zero Ultra|Zero 20|Zero X Pro|Note 50 Pro+ 5G|Note 50 Pro|Note 50|Note 50s|Note 40 Pro+ 5G|Note 40 Pro|Note 40|'
       + 'Note 30 Pro|Note 30 5G|Note 30|Note 12 Pro|Note 12 G96|Note 12|Note 11 Pro|Note 11|Note 10 Pro|Note 10|Hot 60 Pro+|Hot 60 Pro|Hot 60|Hot 60i|Hot 50 Pro+|Hot 50 Pro|Hot 50|Hot 50i|Hot 40 Pro|'
       + 'Hot 40|Hot 40i|Hot 30|Hot 30i|Hot 30 Play|Hot 20S|Hot 20|Hot 20i|Hot 12|Hot 12i|Hot 12 Play|Hot 11S|Hot 11|Hot 11 Play|Hot 10S|Hot 10|Hot 10i|Hot 10 Play|Hot 9|Hot 9 Play|Smart 10|Smart 9|'
-      + 'Smart 8|Smart 7|Smart 6|Smart 5|Smart 4|Xpad'],
+      + 'Smart 8|Smart 7|Smart 6|Smart 5|Smart 4|Xpad|Zero 5G 2023|Zero 5G'],
     ['Tecno', '', 'Camon 50 Ultra|Camon 50 Pro|Camon 50|Camon Air|Camon Slim|Spark 50 Pro|Spark 50s|Spark 50c|Spark 50|Spark Go 3 Pro|Spark Go 3|Spark Go 2|Spark Go 1S|Spark Slim|Pova 8 Pro|Pova 8|Pova Curve 2|Pova Curve|Pova Slim|Pova 7 Ultra|Pop X|Pop 9|Phantom V Fold2|Megapad Pro|Megapad SE|Megapad 11|Camon 40 Pro|Camon 40|Camon 30 Premier|Camon 30 Pro|Camon 30|Camon 20 Premier|Camon 20 Pro|Camon 20|Camon 19 Pro|Camon 19|Camon 18|Camon 17|Pova 7 Pro|Pova 7|Pova 6 Pro|Pova 6|'
       + 'Pova 5 Pro|Pova 5|Pova 4 Pro|Pova 4|Pova 3|Pova 2|Spark 40 Pro+|Spark 40 Pro|Spark 40|Spark 30 Pro|Spark 30|Spark 30C|Spark 20 Pro+|Spark 20 Pro|Spark 20|Spark 20C|'
       + 'Spark 10 Pro|Spark 10|Spark 10C|Spark 9 Pro|Spark 9|Spark 8|Spark Go 2024|Phantom V Fold|Phantom V Flip|Phantom X2 Pro'],
@@ -49,7 +49,7 @@
       + 'X9|X8c|X8b|X8a|X8 5G|X8|X7c|X7b|X7a|X7|X6c|X6b|X6a|X6|X5 Plus|X5|Pad 9|Pad X9'],
     ['Google Pixel', 'google', '11 Pro Fold|11 Pro XL|11 Pro|11|10 Pro Fold|10 Pro XL|10 Pro|10|10a|9 Pro Fold|9 Pro XL|9 Pro|9|9a|8 Pro|8|8a|Fold|7 Pro|7|7a|6 Pro|6|6a|5|5a|4a 5G|4a|4 XL|4|3a XL|3a|3 XL|3|Tablet'],
     ['OnePlus', 'one plus', '16|15T|15|15R|13s|13|13R|Nord 6|Nord CE6|Nord CE6 Lite|Pad 4|Pad 3 Pro|Pad Go 2|Pad Lite|12|12R|11|10 Pro|10T|9 Pro|9|8T|8 Pro|8|7T Pro|7T|7 Pro|7|6T|6|Open|Nord 5|Nord CE5|Nord 4|Nord CE4|'
-      + 'Nord CE4 Lite|Nord 3|Nord CE3|Nord CE3 Lite|Nord 2T|Nord 2|Nord CE 2|Nord CE 2 Lite|Nord CE|Nord N30|Nord N20|Nord N10|Nord|Pad 3|Pad 2|Pad'],
+      + 'Nord CE4 Lite|Nord 3|Nord CE3|Nord CE3 Lite|Nord 2T|Nord 2|Nord CE 2|Nord CE 2 Lite|Nord CE|Nord N30|Nord N20|Nord N10|Nord|Pad 3|Pad 2|Pad|Ace 6 Ultra|Ace 6T|Ace 6|Ace 5 Ultra|Ace 5 Racing|Ace 5 Pro|Ace 5|Ace 3 Pro|Ace 3V|Ace 3'],
     ['Motorola', 'moto', 'Signature|Razr Fold|Razr 70 Ultra|Razr 70+|Razr 70|Edge 70 Plus|Edge 70 Max|Edge 70 Pro+|Edge 70 Pro|Edge 70 Fusion+|Edge 70 Fusion|Edge 70|Edge 60 Neo|Moto G87|Moto G77 Power|Moto G77|Moto G67 Power|Moto G67|Moto G57 Power|Moto G57|Moto G47|Moto G37 Power|Moto G37|Moto G17 Power|Moto G17|Moto G100S|Moto G100|Moto G96|Moto G86 Power|Moto G06 Power|Moto G06|Moto Pad 70 Pro|Moto Pad 70|Moto Pad 60 Neo|Edge 60 Pro|Edge 60 Fusion|Edge 60|Edge 50 Ultra|Edge 50 Pro|Edge 50 Fusion|Edge 50|Edge 40 Pro|Edge 40 Neo|Edge 40|Edge 30 Ultra|Edge 30 Pro|Edge 30 Fusion|Edge 30|'
       + 'Razr 60 Ultra|Razr 60|Razr 50 Ultra|Razr 50|Razr 40 Ultra|Razr 40|Moto G86|Moto G85|Moto G84|Moto G75|Moto G73|Moto G56|Moto G55|Moto G54|Moto G35|Moto G34|Moto G24 Power|Moto G24|'
       + 'Moto G15|Moto G14|Moto G05|Moto G04|Moto E40|Moto E32|Moto E22|Moto E20|Moto E13'],
@@ -58,10 +58,11 @@
     ['ASUS', 'asus', 'ROG Phone 9 FE|ROG Phone 9 Pro|ROG Phone 9|ROG Phone 8 Pro|ROG Phone 8|ROG Phone 7 Ultimate|ROG Phone 7|ROG Phone 6 Pro|ROG Phone 6|ROG Phone 5s|ROG Phone 5|ROG Phone 3|ROG Phone 2|ROG Phone|'
       + 'Zenfone 12 Ultra|Zenfone 11 Ultra|Zenfone 10|Zenfone 9|Zenfone 8|Zenfone Max Pro M2|Zenfone Max Pro M1'],
     ['Nothing', '', 'Phone (4b)|Phone (4a) Pro|Phone (4a)|Phone (3a) Lite|Phone (3)|Phone (3a) Pro|Phone (3a)|Phone (2a) Plus|Phone (2a)|Phone (2)|Phone (1)|CMF Phone 2 Pro|CMF Phone 1'],
+    ['nubia', 'zte blade', 'V80 Max|V80 Design|V70 Max|V70 Design|V60 Design|Neo 3 5G|Neo 3|Neo 2|Focus 2 Ultra|Focus Pro|Music|Flip 2|Z70 Ultra|Z60 Ultra'],
     ['RedMagic', 'nubia red magic', '11S Pro|11 Pro|10S Pro|10 Pro|9S Pro|9 Pro|8S Pro|8 Pro|7S Pro|7'],
     ['Sony Xperia', 'sony', '1 VIII|10 VIII|10 VII|1 VII|1 VI|1 V|1 IV|1 III|5 V|5 IV|10 VI|10 V|10 IV'],
     ['Cherry Mobile', 'cherry', 'Aqua S9|Flare S8'],
-    ['Lenovo', '', 'Legion Tab|Tab P12|Tab P11|Tab M11|Tab M10'],
+    ['Lenovo', '', 'Legion Y70 (2026)|Legion Y70|Legion Y90|Legion Tab (Gen 3)|Legion Tab|Tab P12|Tab P11|Tab M11|Tab M10'],
     ['TCL', '', '40 SE|30 SE'],
   ];
   const IOS = 'iPhone Duo|iPhone 18 Pro Max|iPhone 18 Pro|iPhone 17 Pro Max|iPhone 17 Pro|iPhone Air|iPhone 17|iPhone 17e|iPhone 16 Pro Max|iPhone 16 Pro|iPhone 16 Plus|iPhone 16|iPhone 16e|iPhone 15 Pro Max|iPhone 15 Pro|iPhone 15 Plus|iPhone 15|'
