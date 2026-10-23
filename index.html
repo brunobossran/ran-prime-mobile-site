@@ -77,12 +77,12 @@
     </div>
   </section>
 
-  <!-- Scroll story 2: the six classes -->
-  <section class="story story-cls" id="classes" data-story style="--n:6" aria-labelledby="classes-title">
-    <div class="stage">
-      <h2 class="sr-only" id="classes-title">Choose your class</h2>
-      <div class="beats">
-        <article class="beat cls" data-id="brawler">
+  <!-- The six classes: swipe on phones, arrows or portraits to switch -->
+  <section class="classes" id="classes" aria-labelledby="classes-title">
+    <h2 id="classes-title">Choose your class</h2>
+    <div class="cls-viewport">
+      <div class="cls-track" id="cls-track" tabindex="0" aria-label="Classes. Swipe or use the arrows to see each one.">
+        <article class="cls" data-id="brawler">
           <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><img src="assets/renders/hd/brawler.png" alt="The Brawler class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Close quarters, gauntlets</p>
@@ -91,7 +91,7 @@
             <button class="btn btn-line" type="button" data-view="brawler"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
-        <article class="beat cls" data-id="swordsman">
+        <article class="cls" data-id="swordsman">
           <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><img src="assets/renders/hd/swordsman.png" alt="The Swordsman class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Melee, sword</p>
@@ -100,7 +100,7 @@
             <button class="btn btn-line" type="button" data-view="swordsman"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
-        <article class="beat cls" data-id="archer">
+        <article class="cls" data-id="archer">
           <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><img src="assets/renders/hd/archer.png" alt="The Archer class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Ranged, bow</p>
@@ -109,7 +109,7 @@
             <button class="btn btn-line" type="button" data-view="archer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
-        <article class="beat cls" data-id="shaman">
+        <article class="cls" data-id="shaman">
           <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><img src="assets/renders/hd/shaman.png" alt="The Shaman class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Staff and spells</p>
@@ -118,7 +118,7 @@
             <button class="btn btn-line" type="button" data-view="shaman"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
-        <article class="beat cls" data-id="extreme">
+        <article class="cls" data-id="extreme">
           <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><img src="assets/renders/hd/extreme.png" alt="The Extreme class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Versatile, sword</p>
@@ -127,7 +127,7 @@
             <button class="btn btn-line" type="button" data-view="extreme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5L12 2.5zM3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>Rotate in 3D</button>
           </div>
         </article>
-        <article class="beat cls" data-id="gunner">
+        <article class="cls" data-id="gunner">
           <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><img src="assets/renders/hd/gunner.png" alt="The Gunner class" loading="lazy" decoding="async"></div>
           <div class="cls-text">
             <p class="cls-meta">Firearms, dual guns</p>
@@ -137,15 +137,17 @@
           </div>
         </article>
       </div>
-      <nav class="cls-nav" id="cls-nav" aria-label="Jump to a class">
-        <button type="button"><span class="pt" style="--o:50.6% 12.9%;--t:-0.6%,23.5%;--s:3.57"><img src="assets/renders/brawler-idle.png" alt="" loading="lazy"></span>Brawler</button>
-        <button type="button"><span class="pt" style="--o:61.1% 35.4%;--t:-11.1%,1.0%;--s:4.88"><img src="assets/renders/swordsman-idle.png" alt="" loading="lazy"></span>Swordsman</button>
-        <button type="button"><span class="pt" style="--o:54.8% 49.7%;--t:-4.8%,-13.2%;--s:6.36"><img src="assets/renders/archer-idle.png" alt="" loading="lazy"></span>Archer</button>
-        <button type="button"><span class="pt" style="--o:47.0% 42.9%;--t:3.0%,-6.4%;--s:5.55"><img src="assets/renders/shaman-idle.png" alt="" loading="lazy"></span>Shaman</button>
-        <button type="button"><span class="pt" style="--o:60.9% 35.1%;--t:-10.9%,1.4%;--s:4.85"><img src="assets/renders/extreme-idle.png" alt="" loading="lazy"></span>Extreme</button>
-        <button type="button"><span class="pt" style="--o:53.7% 12.9%;--t:-3.7%,23.5%;--s:3.57"><img src="assets/renders/gunner-idle.png" alt="" loading="lazy"></span>Gunner</button>
-      </nav>
+      <button class="cls-arrow prev" type="button" id="cls-prev" aria-label="Previous class"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="cls-arrow next" type="button" id="cls-next" aria-label="Next class"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
+    <nav class="cls-nav" id="cls-nav" aria-label="Choose a class">
+      <button type="button"><span class="pt" style="--o:50.6% 12.9%;--t:-0.6%,23.5%;--s:3.57"><img src="assets/renders/brawler-idle.png" alt="" loading="lazy"></span>Brawler</button>
+      <button type="button"><span class="pt" style="--o:61.1% 35.4%;--t:-11.1%,1.0%;--s:4.88"><img src="assets/renders/swordsman-idle.png" alt="" loading="lazy"></span>Swordsman</button>
+      <button type="button"><span class="pt" style="--o:54.8% 49.7%;--t:-4.8%,-13.2%;--s:6.36"><img src="assets/renders/archer-idle.png" alt="" loading="lazy"></span>Archer</button>
+      <button type="button"><span class="pt" style="--o:47.0% 42.9%;--t:3.0%,-6.4%;--s:5.55"><img src="assets/renders/shaman-idle.png" alt="" loading="lazy"></span>Shaman</button>
+      <button type="button"><span class="pt" style="--o:60.9% 35.1%;--t:-10.9%,1.4%;--s:4.85"><img src="assets/renders/extreme-idle.png" alt="" loading="lazy"></span>Extreme</button>
+      <button type="button"><span class="pt" style="--o:53.7% 12.9%;--t:-3.7%,23.5%;--s:3.57"><img src="assets/renders/gunner-idle.png" alt="" loading="lazy"></span>Gunner</button>
+    </nav>
   </section>
 
   <section class="test" id="test" aria-labelledby="test-title">

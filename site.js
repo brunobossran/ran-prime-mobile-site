@@ -7,76 +7,54 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 
 // Smooth scrolling (Lenis): eases wheel and trackpad scrolling; phones keep their native touch scrolling.
 const lenis = !reduceMotion && window.Lenis ? new Lenis({ autoRaf: true, lerp: 0.1, anchors: { offset: -64 } }) : null;
-function scrollToY(y) {
-  if (lenis) lenis.scrollTo(y);
-  else window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
-}
 
 // Header: transparent over the hero, solid once you scroll
 const header = document.getElementById('site-header');
 function updateHeader() { header.classList.toggle('solid', window.scrollY > 40); }
-
-// Scroll stories: each [data-story] section pins its stage and shows one beat at a time.
-// The section is (n beats × 75vh) taller than the screen; how far you've scrolled through it picks the beat.
-const stories = [...document.querySelectorAll('[data-story]')].map((el) => {
-  const beats = [...el.querySelectorAll('.beat')];
-  const rail = el.querySelector('.rail');
-  if (rail) rail.innerHTML = beats.map(() => '<i></i>').join('');
-  return { el, beats, dots: rail ? [...rail.children] : [], nav: [...el.querySelectorAll('.cls-nav button')], top: 0, span: 1, index: -1 };
-});
-
-function measure() {
-  stories.forEach((s) => {
-    s.top = s.el.getBoundingClientRect().top + window.scrollY;
-    s.span = Math.max(1, s.el.offsetHeight - window.innerHeight);
-  });
-}
-
-function setBeat(s, i) {
-  if (i === s.index) return;
-  s.index = i;
-  s.beats.forEach((b, j) => {
-    b.classList.toggle('on', j === i);
-    b.toggleAttribute('inert', j !== i);
-  });
-  s.dots.forEach((d, j) => d.classList.toggle('on', j === i));
-  s.nav.forEach((b, j) => b.setAttribute('aria-current', String(j === i)));
-  const current = s.nav[i];
-  if (current) current.parentElement.scrollTo({ left: current.offsetLeft - (current.parentElement.clientWidth - current.offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
-}
-
-function updateStories() {
-  stories.forEach((s) => {
-    const p = Math.min(1, Math.max(0, (window.scrollY - s.top) / s.span));
-    setBeat(s, Math.min(s.beats.length - 1, Math.floor(p * s.beats.length)));
-  });
-}
-
-// Jump buttons under the classes story scroll to the middle of that class's stretch
-stories.forEach((s) => s.nav.forEach((b, i) => b.addEventListener('click', () => {
-  scrollToY(s.top + s.span * (i + 0.5) / s.beats.length);
-})));
-
 let ticking = false;
-function onScroll() {
+window.addEventListener('scroll', () => {
   if (ticking) return;
   ticking = true;
-  requestAnimationFrame(() => { ticking = false; updateHeader(); updateStories(); });
-}
-window.addEventListener('scroll', onScroll, { passive: true });
-// Phones fire resize as the address bar shows and hides; only re-measure when the width changes.
-let lastWidth = window.innerWidth;
-window.addEventListener('resize', () => {
-  if (window.innerWidth === lastWidth) return;
-  lastWidth = window.innerWidth;
-  measure(); onScroll();
-});
-window.addEventListener('load', () => { measure(); onScroll(); });
-measure();
+  requestAnimationFrame(() => { ticking = false; updateHeader(); });
+}, { passive: true });
 updateHeader();
-updateStories();
 
-// Load and decode the class renders well before the classes story reaches the screen
+// Classes: swipe the track on phones, or use the arrows and portrait buttons. The page scrolls normally around it.
+const track = document.getElementById('cls-track');
+const slides = [...track.querySelectorAll('.cls')];
+const picks = [...document.querySelectorAll('#cls-nav button')];
+const prev = document.getElementById('cls-prev');
+const next = document.getElementById('cls-next');
+let current = -1;
+
+function showClass(i) {
+  track.scrollTo({ left: slides[i].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+function markClass(i) {
+  if (i === current) return;
+  current = i;
+  slides.forEach((sl, j) => {
+    sl.classList.toggle('on', j === i);
+    sl.toggleAttribute('inert', j !== i);
+  });
+  picks.forEach((b, j) => b.setAttribute('aria-current', String(j === i)));
+  prev.disabled = i === 0;
+  next.disabled = i === slides.length - 1;
+  const nav = picks[i].parentElement;
+  nav.scrollTo({ left: picks[i].offsetLeft - (nav.clientWidth - picks[i].offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+let trackTicking = false;
+track.addEventListener('scroll', () => {
+  if (trackTicking) return;
+  trackTicking = true;
+  requestAnimationFrame(() => { trackTicking = false; markClass(Math.round(track.scrollLeft / track.clientWidth)); });
+}, { passive: true });
+picks.forEach((b, i) => b.addEventListener('click', () => showClass(i)));
+prev.addEventListener('click', () => showClass(Math.max(0, current - 1)));
+next.addEventListener('click', () => showClass(Math.min(slides.length - 1, current + 1)));
+markClass(0);
+
+// Load and decode the class renders well before the classes section reaches the screen, so swiping never waits on an image
 const clsImgs = [...document.querySelectorAll('.cls-art img')];
 if ('IntersectionObserver' in window) {
   const pre = new IntersectionObserver(([e]) => {
@@ -210,10 +188,9 @@ dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
 const sticky = document.getElementById('sticky-cta');
 const form = document.getElementById('signup');
-const seen = { hero: true, form: false, story: false };
+const seen = { hero: true, form: false };
 function updateSticky() {
-  // also hidden while a scroll story is pinned, so it doesn't cover the stage
-  const show = !seen.hero && !seen.form && !seen.story;
+  const show = !seen.hero && !seen.form;
   sticky.classList.toggle('show', show);
   sticky.setAttribute('aria-hidden', String(!show));
   sticky.querySelector('a').tabIndex = show ? 0 : -1;
@@ -225,13 +202,6 @@ if ('IntersectionObserver' in window) {
   });
   io.observe(document.querySelector('.hero'));
   io.observe(form);
-  const inStory = new Set();
-  const storyIo = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) inStory.add(e.target); else inStory.delete(e.target); });
-    seen.story = inStory.size > 0;
-    updateSticky();
-  }, { rootMargin: '-50% 0px -50% 0px' });
-  stories.forEach((st) => storyIo.observe(st.el));
 }
 
 // Sign-up form: Android and iPhone collect different emails (Google Play tests invite by Google account, TestFlight by Apple ID)
