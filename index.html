@@ -18,9 +18,9 @@
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Michroma&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@50..125,300..800&family=Orbitron:wght@900&family=Michroma&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
@@ -38,15 +38,20 @@
       <rect x="806" y="282" width="232" height="48" rx="6" fill="#f2c14e"/>
       <text x="922" y="317" text-anchor="middle" font-family="Michroma" font-size="28" fill="#111" textLength="170" lengthAdjust="spacing">MOBILE</text>
     </symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.1L14.1 2C10.9 2 10.2 4.4 10.2 6v2.5H8V12h2.2v10H14V12h2.8l.4-3.5H14z"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.4-.6 3.1-1.5z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6-9.5-9.6zm10.5 10.6 2.9 2.9-11.6 6.6 8.7-9.5zm0-2-8.7-9.5 11.6 6.6-2.9 2.9zm4.1-2.3 2.9 1.7c.8.5.8 1.3 0 1.8l-2.9 1.7-3.1-3.1 3.1-2.1z"/></symbol>
+    <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.5 11.5 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></symbol>
   </defs>
 </svg>
 
-<header class="site-header">
+<header class="site-header overlay" id="site-header">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="RAN - Prime Dev Mobile home"><svg viewBox="20 60 1038 299"><use href="#logoB2"/></svg></a>
     <nav class="nav" aria-label="Main">
-      <a href="#test">Mobile test</a>
+      <a href="#classic">Classic RAN</a>
       <a href="#classes">Classes</a>
+      <a href="#test">Mobile test</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a class="btn btn-primary btn-small" href="#signup">Join test</a>
@@ -56,75 +61,154 @@
 <main id="top">
   <section class="hero" aria-labelledby="hero-title">
     <img class="hero-bg" src="assets/art/campus.png" alt="">
-    <svg class="hero-emblem" viewBox="0 0 643 473" aria-hidden="true"><use href="#em"/></svg>
-    <div class="blades" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="wrap">
-      <div class="duo" aria-hidden="true">
-        <img class="back" src="assets/renders/gunner-female-idle.png" alt="">
-        <img class="front" src="assets/renders/gunner.png" alt="">
-      </div>
-      <div class="hero-copy">
-        <p class="soon"><span>Coming soon</span> New server · Android &amp; iPhone</p>
-        <h1 id="hero-title">Classic EP7.<br>Built for your phone.</h1>
-        <p class="sub">A new Episode 7 server from Prime Developments, made to play on Android and iPhone. Everyone begins together at level 1.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="#signup">Join the test list</a>
-          <a class="btn btn-ghost" href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.1L14.1 2C10.9 2 10.2 4.4 10.2 6v2.5H8V12h2.2v10H14V12h2.8l.4-3.5H14z"/></svg>Follow for news</a>
+    <div class="hero-light" aria-hidden="true"></div>
+    <canvas class="dust" id="dust" aria-hidden="true"></canvas>
+    <div class="duo" aria-hidden="true">
+      <img class="duo-back" src="assets/renders/gunner-female-idle.png" alt="">
+      <img class="duo-front" src="assets/renders/gunner.png" alt="">
+    </div>
+    <div class="hero-copy wrap">
+      <h1 id="hero-title"><span class="sr-only">RAN - Prime Dev Mobile</span><svg class="lockup" viewBox="20 60 1038 299" aria-hidden="true"><use href="#logoB2"/></svg></h1>
+      <p class="hero-line">Classic EP7. Built for your phone.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary btn-wide" href="#signup">Join the test list</a>
+        <div class="stores" aria-label="App stores">
+          <span class="store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span>App Store</span><em>Soon</em></span>
+          <span class="store"><svg aria-hidden="true"><use href="#i-play"/></svg><span>Google Play</span><em>Soon</em></span>
         </div>
-        <p class="note">Free to play · Test dates announced soon</p>
       </div>
     </div>
+    <a class="ticker" href="#test">
+      <b>Status</b>
+      <span>Now testing on phones</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
   </section>
 
-  <div class="proof" aria-label="About the server">
-    <div class="wrap">
-      <ul>
-        <li><b>New</b> server</li>
-        <li><b>Level 1</b> for everyone</li>
-        <li><b>Free</b> to play</li>
-        <li><b>Android</b> &amp; iPhone</li>
-      </ul>
+  <!-- Scroll story 1: classic key art, shown whole (never cropped) so the artwork's logos and copyright stay intact -->
+  <section class="story story-art" id="classic" data-story style="--n:3" aria-label="Classic RAN">
+    <div class="stage">
+      <div class="beats">
+        <article class="beat">
+          <figure class="art"><img src="assets/art/keyart-1.jpg" alt="RAN Online key art: two Gunners with pistols and a rifle in front of a school building" width="933" height="700" loading="lazy"></figure>
+          <div class="beat-text">
+            <h2>The RAN you grew up with</h2>
+            <p>Classic Episode 7: the school wars, the six classes and the look you remember.</p>
+          </div>
+        </article>
+        <article class="beat">
+          <figure class="art"><img src="assets/art/keyart-2.jpg" alt="RAN Online key art: two Gunners in lab coats aiming over a ruined city" width="640" height="480" loading="lazy"></figure>
+          <div class="beat-text">
+            <h2>A new server. Level 1 for everyone.</h2>
+            <p>Launch day is an equal start. Nobody carries a character over and nobody gets a head start.</p>
+          </div>
+        </article>
+        <article class="beat">
+          <figure class="art"><img src="assets/art/keyart-3.jpg" alt="RAN Online key art: two Gunners in lab coats with a gatling gun in a city street" width="516" height="387" loading="lazy"></figure>
+          <div class="beat-text">
+            <h2>Made for the phone in your hand</h2>
+            <p>Touch controls and menus designed for Android and iPhone screens.</p>
+          </div>
+        </article>
+      </div>
+      <p class="credit">Key art © myRosso Sdn. Bhd.</p>
+      <div class="rail" aria-hidden="true"><i></i></div>
     </div>
-  </div>
-
-  <section class="keyart" aria-labelledby="keyart-title">
-    <div class="wrap">
-      <p class="kicker">Classic RAN</p>
-      <h2 id="keyart-title">The RAN you grew up with</h2>
-    </div>
-    <div class="keyart-strip">
-      <figure><img src="assets/art/keyart-1.jpg" alt="RAN Online key art: two Gunners with pistols and a rifle in front of a school building" width="933" height="700" loading="lazy"></figure>
-      <figure><img src="assets/art/keyart-2.jpg" alt="RAN Online key art: two Gunners in lab coats aiming over a ruined city" width="640" height="480" loading="lazy"></figure>
-      <figure><img src="assets/art/keyart-3.jpg" alt="RAN Online key art: two Gunners in lab coats with a gatling gun in a city street" width="516" height="387" loading="lazy"></figure>
-    </div>
-    <p class="wrap credit">Key art © myRosso Sdn. Bhd.</p>
   </section>
 
-  <section id="test" aria-labelledby="test-title">
+  <!-- Scroll story 2: the six classes -->
+  <section class="story story-cls" id="classes" data-story style="--n:6" aria-labelledby="classes-title">
+    <div class="stage">
+      <h2 class="sr-only" id="classes-title">Choose your class</h2>
+      <div class="beats">
+        <article class="beat cls" data-id="brawler">
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Brawler</h3><img src="assets/renders/brawler.png" alt="The Brawler class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Close quarters, gauntlets</p>
+            <p class="cls-tag">Make every hit count.</p>
+            <p>Get close. Stand your ground. Fight with gauntlets and the unmistakable rhythm of RAN's hand-to-hand combat.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="brawler">Rotate in 3D</button>
+          </div>
+        </article>
+        <article class="beat cls" data-id="swordsman">
+          <div class="cls-art" style="--len:9"><h3 class="cls-word">Swordsman</h3><img src="assets/renders/swordsman.png" alt="The Swordsman class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Melee, sword</p>
+            <p class="cls-tag">Meet the fight head-on.</p>
+            <p>Take up the blade and step into the front line with RAN's classic sword-wielding fighting style.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="swordsman">Rotate in 3D</button>
+          </div>
+        </article>
+        <article class="beat cls" data-id="archer">
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Archer</h3><img src="assets/renders/archer.png" alt="The Archer class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Ranged, bow</p>
+            <p class="cls-tag">Find your distance.</p>
+            <p>Choose your position and let the arrows fly with the familiar bow-wielding ranged class.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="archer">Rotate in 3D</button>
+          </div>
+        </article>
+        <article class="beat cls" data-id="shaman">
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Shaman</h3><img src="assets/renders/shaman.png" alt="The Shaman class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Staff and spells</p>
+            <p class="cls-tag">Bring a different power.</p>
+            <p>Wield a staff and explore RAN's spell-focused path. A familiar presence in party play.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="shaman">Rotate in 3D</button>
+          </div>
+        </article>
+        <article class="beat cls" data-id="extreme">
+          <div class="cls-art" style="--len:7"><h3 class="cls-word">Extreme</h3><img src="assets/renders/extreme.png" alt="The Extreme class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Versatile, sword</p>
+            <p class="cls-tag">Explore another path.</p>
+            <p>Discover the Extreme class with its original EP7 appearance.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="extreme">Rotate in 3D</button>
+          </div>
+        </article>
+        <article class="beat cls" data-id="gunner">
+          <div class="cls-art" style="--len:6"><h3 class="cls-word">Gunner</h3><img src="assets/renders/gunner.png" alt="The Gunner class" width="540" height="740" loading="lazy"></div>
+          <div class="cls-text">
+            <p class="cls-meta">Firearms, dual guns</p>
+            <p class="cls-tag">Change the pace.</p>
+            <p>Take aim with the Gunner's original firearms, plus EP7's intelligence-build summon system.</p>
+            <button class="btn btn-ghost btn-small" type="button" data-view="gunner">Rotate in 3D</button>
+          </div>
+        </article>
+      </div>
+      <nav class="cls-nav" id="cls-nav" aria-label="Jump to a class">
+        <button type="button">Brawler</button>
+        <button type="button">Swordsman</button>
+        <button type="button">Archer</button>
+        <button type="button">Shaman</button>
+        <button type="button">Extreme</button>
+        <button type="button">Gunner</button>
+      </nav>
+    </div>
+  </section>
+
+  <section class="test" id="test" aria-labelledby="test-title">
     <div class="wrap test-grid">
-      <div>
-        <p class="kicker">Mobile test</p>
-        <h2 id="test-title">Where we are now</h2>
-        <ol class="steps">
-          <li class="now"><b>Building &amp; testing on phones <em class="now-tag">NOW</em></b><span>Touch controls, performance and device checks.</span></li>
+      <div class="test-intro">
+        <h2 id="test-title">Get early access</h2>
+        <p class="lead">Join the test list and we'll email you when testing opens on your phone.</p>
+        <ol class="steps" aria-label="Mobile test progress">
+          <li class="now"><b>Building and testing on phones <em>Now</em></b><span>Touch controls, performance and device checks.</span></li>
           <li><b>Official announcement</b><span>Coming soon on our Facebook page.</span></li>
           <li><b>Alpha test</b><span>Dates follow the announcement.</span></li>
           <li><b>Launch</b><span>Free on Android and iPhone.</span></li>
         </ol>
-        <a class="follow" href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.1L14.1 2C10.9 2 10.2 4.4 10.2 6v2.5H8V12h2.2v10H14V12h2.8l.4-3.5H14z"/></svg><span><b>Follow Prime Dev on Facebook</b>Hear the announcement first.</span></a>
+        <a class="follow" href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg><span><b>Follow Prime Dev on Facebook</b>Hear the announcement first.</span></a>
       </div>
       <form class="signup" id="signup" novalidate>
-        <div>
-          <p class="kicker" style="margin-bottom:6px">Test list</p>
-          <h3>Get early access</h3>
-        </div>
+        <h3>Test list</h3>
         <fieldset class="platform">
           <legend>Your phone</legend>
           <div class="seg">
             <input type="radio" name="platform" id="p-android" value="android" checked>
-            <label for="p-android"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.5 11.5 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>Android</label>
+            <label for="p-android"><svg aria-hidden="true"><use href="#i-android"/></svg>Android</label>
             <input type="radio" name="platform" id="p-ios" value="ios">
-            <label for="p-ios"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.4-.6 3.1-1.5z"/></svg>iPhone / iPad</label>
+            <label for="p-ios"><svg aria-hidden="true"><use href="#i-apple"/></svg>iPhone / iPad</label>
           </div>
         </fieldset>
         <label for="f-name">Facebook name
@@ -174,45 +258,8 @@
     </div>
   </section>
 
-  <section id="classes" aria-labelledby="classes-title">
-    <div class="wrap">
-      <p class="kicker">Six classes</p>
-      <h2 id="classes-title">Choose your class</h2>
-      <div class="class-grid">
-        <div class="viewer">
-          <model-viewer id="mv" loading="lazy" camera-controls auto-rotate autoplay animation-name="attack" shadow-intensity="1" exposure="1.1" interaction-prompt="none" camera-orbit="20deg 80deg auto" alt="3D model of the selected class"></model-viewer>
-          <p class="hint">Drag to rotate</p>
-        </div>
-        <div>
-          <div class="class-tabs" id="class-tabs" role="group" aria-label="Choose a class"></div>
-          <div class="class-info" aria-live="polite">
-            <div class="name" id="c-name"></div>
-            <p class="tagline" id="c-tag"></p>
-            <p id="c-desc"></p>
-            <p class="meta" id="c-meta"></p>
-            <div class="moves" id="moves" role="group" aria-label="Choose a move"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="expect" aria-labelledby="ep7-title">
-    <div class="wrap">
-      <p class="kicker">What to expect</p>
-      <h2 id="ep7-title">Same EP7. New server.</h2>
-      <ul class="tiles">
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg><b>Equal start</b><span>Everyone begins on launch day at level 1. No head starts.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 1.8 6 5.5"/></svg><b>All six classes</b><span>Brawler to Gunner, in their original EP7 look.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg><b>Made for touch</b><span>Controls and menus designed for phone screens.</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>Fair play</b><span>No paid guilds. Anti-bot and anti-cheat from day one.</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="faq" aria-labelledby="faq-title">
-    <div class="wrap">
-      <p class="kicker">FAQ</p>
+  <section class="faq-sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
       <h2 id="faq-title">Questions</h2>
       <div class="faq">
         <details><summary>Is this the same as the PC server?</summary><p>No. This is a new, separate server, and everyone starts at level 1. Looking for the PC version? Visit <a href="https://ep7.ranonlineofficial.com/" target="_blank" rel="noopener">ep7.ranonlineofficial.com</a>.</p></details>
@@ -220,6 +267,7 @@
         <details><summary>How will I get the test?</summary><p><b>Android:</b> we'll add your Google account to our Google Play test and email you a link. You install the game from the Play Store like any other app.</p><p><b>iPhone and iPad:</b> we'll send an invite to your Apple ID email. Install Apple's free TestFlight app, then open the invite to install the game.</p></details>
         <details><summary>Which phones will be supported?</summary><p>We're testing on a wide range of Android phones and iPhones, including older models. Add your phone model when you join the list so we can include it.</p></details>
         <details><summary>Is it free?</summary><p>Yes. RAN - Prime Dev Mobile is free to play.</p></details>
+        <details><summary>Will there be paid guilds or bots?</summary><p>No paid guilds. Anti-bot and anti-cheat run from day one.</p></details>
         <details><summary>Is this the official RAN Online?</summary><p>No. RAN - Prime Dev Mobile is made by Prime Developments, an independent team.</p></details>
         <details><summary>How do I contact you?</summary><p>Send us a message on our <a href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener">Facebook page</a>.</p></details>
       </div>
@@ -231,9 +279,9 @@
     <div class="wrap">
       <h2 id="final-title">Play. Compete. Stay.</h2>
       <p class="lead">Be among the first to play when testing opens.</p>
-      <div class="hero-ctas">
+      <div class="final-ctas">
         <a class="btn btn-primary" href="#signup">Join the test list</a>
-        <a class="btn btn-ghost" href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.1L14.1 2C10.9 2 10.2 4.4 10.2 6v2.5H8V12h2.2v10H14V12h2.8l.4-3.5H14z"/></svg>Follow for news</a>
+        <a class="btn btn-ghost" href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-fb"/></svg>Follow for news</a>
       </div>
     </div>
   </section>
@@ -243,11 +291,23 @@
   <a class="btn btn-primary btn-block" href="#signup" tabindex="-1">Join the test list</a>
 </div>
 
+<dialog class="viewer" id="viewer" aria-labelledby="v-name">
+  <div class="viewer-head">
+    <h3 id="v-name">Gunner</h3>
+    <button class="viewer-close" type="button" id="viewer-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <model-viewer id="mv" camera-controls auto-rotate autoplay animation-name="attack" shadow-intensity="1" exposure="1.1" interaction-prompt="none" camera-orbit="20deg 80deg auto" alt="3D model of the selected class"></model-viewer>
+  <div class="moves" id="moves" role="group" aria-label="Choose a move"></div>
+  <p class="hint">Drag to rotate</p>
+</dialog>
+
 <footer class="site-footer">
   <div class="wrap">
+    <svg class="foot-logo" viewBox="20 60 1038 299" aria-hidden="true"><use href="#logoB2"/></svg>
     <nav aria-label="Footer">
       <a href="https://www.facebook.com/ranonline.developments" target="_blank" rel="noopener">Facebook</a>
       <a href="privacy.html">Privacy policy</a>
+      <a href="https://ep7.ranonlineofficial.com/" target="_blank" rel="noopener">PC server</a>
     </nav>
     <p>© 2026 Prime Developments. RAN Online and its characters and art belong to their respective owners. Prime Developments is an independent team and is not affiliated with the original publishers.</p>
   </div>

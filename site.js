@@ -2,27 +2,118 @@
 // While it's empty, the form explains that sign-up opens soon and sends nothing.
 const FORM_ENDPOINT = '';
 
-const CLASSES = [
-  { id: 'brawler', name: 'Brawler', tag: 'Make every hit count.', meta: 'Close quarters · Gauntlets',
-    desc: "Get close. Stand your ground. Fight with gauntlets and the unmistakable rhythm of RAN's hand-to-hand combat." },
-  { id: 'swordsman', name: 'Swordsman', tag: 'Meet the fight head-on.', meta: 'Melee · Sword',
-    desc: "Take up the blade and step into the front line with RAN's classic sword-wielding fighting style." },
-  { id: 'archer', name: 'Archer', tag: 'Find your distance.', meta: 'Ranged · Bow',
-    desc: 'Choose your position and let the arrows fly with the familiar bow-wielding ranged class.' },
-  { id: 'shaman', name: 'Shaman', tag: 'Bring a different power.', meta: 'Staff & spells',
-    desc: "Wield a staff and explore RAN's spell-focused path. A familiar presence in party play." },
-  { id: 'extreme', name: 'Extreme', tag: 'Explore another path.', meta: 'Versatile · Sword',
-    desc: 'Discover the Extreme class with its original EP7 appearance.' },
-  { id: 'gunner', name: 'Gunner', tag: 'Change the pace.', meta: 'Firearms · Dual guns',
-    desc: "Take aim with the Gunner's original firearms, plus EP7's intelligence-build summon system." },
-];
 const MOVES = [['attack', 'Attack 1'], ['attack2', 'Attack 2'], ['attack3', 'Attack 3'], ['idle', 'Idle'], ['run', 'Run']];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Class viewer
+// Header: transparent over the hero, solid once you scroll
+const header = document.getElementById('site-header');
+function updateHeader() { header.classList.toggle('solid', window.scrollY > 40); }
+
+// Scroll stories: each [data-story] section pins its stage and shows one beat at a time.
+// The section is (n beats × 75vh) taller than the screen; how far you've scrolled through it picks the beat.
+const stories = [...document.querySelectorAll('[data-story]')].map((el) => {
+  const beats = [...el.querySelectorAll('.beat')];
+  const rail = el.querySelector('.rail');
+  if (rail) rail.innerHTML = beats.map(() => '<i></i>').join('');
+  return { el, beats, dots: rail ? [...rail.children] : [], nav: [...el.querySelectorAll('.cls-nav button')], top: 0, span: 1, index: -1 };
+});
+
+function measure() {
+  stories.forEach((s) => {
+    s.top = s.el.getBoundingClientRect().top + window.scrollY;
+    s.span = Math.max(1, s.el.offsetHeight - window.innerHeight);
+  });
+}
+
+function setBeat(s, i) {
+  if (i === s.index) return;
+  s.index = i;
+  s.beats.forEach((b, j) => {
+    b.classList.toggle('on', j === i);
+    b.toggleAttribute('inert', j !== i);
+  });
+  s.dots.forEach((d, j) => d.classList.toggle('on', j === i));
+  s.nav.forEach((b, j) => b.setAttribute('aria-current', String(j === i)));
+  const current = s.nav[i];
+  if (current) current.parentElement.scrollTo({ left: current.offsetLeft - (current.parentElement.clientWidth - current.offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
+function updateStories() {
+  stories.forEach((s) => {
+    const p = Math.min(1, Math.max(0, (window.scrollY - s.top) / s.span));
+    setBeat(s, Math.min(s.beats.length - 1, Math.floor(p * s.beats.length)));
+  });
+}
+
+// Jump buttons under the classes story scroll to the middle of that class's stretch
+stories.forEach((s) => s.nav.forEach((b, i) => b.addEventListener('click', () => {
+  window.scrollTo({ top: s.top + s.span * (i + 0.5) / s.beats.length, behavior: reduceMotion ? 'auto' : 'smooth' });
+})));
+
+let ticking = false;
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => { ticking = false; updateHeader(); updateStories(); });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => { measure(); onScroll(); });
+window.addEventListener('load', () => { measure(); onScroll(); });
+measure();
+updateHeader();
+updateStories();
+
+// Hero dust: a few slow gold motes in the spotlight. Off for reduced motion and while the hero is off screen.
+const dust = document.getElementById('dust');
+if (dust && !reduceMotion) {
+  const ctx = dust.getContext('2d');
+  let motes = [];
+  let running = false;
+  function sizeDust() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    dust.width = dust.clientWidth * dpr;
+    dust.height = dust.clientHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round(Math.min(70, dust.clientWidth / 14));
+    motes = Array.from({ length: count }, () => ({
+      x: Math.random() * dust.clientWidth,
+      y: Math.random() * dust.clientHeight,
+      r: Math.random() * 1.6 + 0.4,
+      vy: Math.random() * 0.25 + 0.06,
+      vx: (Math.random() - 0.5) * 0.12,
+      a: Math.random() * 0.5 + 0.15,
+    }));
+  }
+  function frame() {
+    if (!running) return;
+    const w = dust.clientWidth, h = dust.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    motes.forEach((m) => {
+      m.y -= m.vy; m.x += m.vx;
+      if (m.y < -4) { m.y = h + 4; m.x = Math.random() * w; }
+      // brighter under the spotlight at the top centre
+      const light = 1 - Math.min(1, Math.abs(m.x - w / 2) / (w * 0.6));
+      ctx.globalAlpha = m.a * (0.35 + 0.65 * light);
+      ctx.fillStyle = '#f7d488';
+      ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2); ctx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+  sizeDust();
+  window.addEventListener('resize', sizeDust);
+  new IntersectionObserver(([e]) => {
+    const was = running;
+    running = e.isIntersecting;
+    if (running && !was) requestAnimationFrame(frame);
+  }).observe(dust);
+}
+
+// 3D viewer: a dialog with the class model. model-viewer (and the 2–3 MB models) only load when it's first opened.
+const dialog = document.getElementById('viewer');
 const mv = document.getElementById('mv');
-const tabs = document.getElementById('class-tabs');
 const moves = document.getElementById('moves');
 const state = { cls: 'gunner', move: 'attack' };
+let viewerLoaded = false;
 
 // Models are plain .glb files on the live site. The preview build ships them as base64 .glb.txt instead.
 const modelCache = {};
@@ -49,46 +140,49 @@ async function showModel(id) {
   if (shownModel === id) mv.setAttribute('src', url);
 }
 
-CLASSES.forEach((c) => {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.dataset.id = c.id;
-  b.innerHTML = `<img src="assets/renders/${c.id}-idle.png" alt="" loading="lazy">${c.name}`;
-  b.addEventListener('click', () => { state.cls = c.id; renderClass(); });
-  tabs.append(b);
-});
 MOVES.forEach(([id, label]) => {
   const b = document.createElement('button');
   b.type = 'button';
   b.dataset.id = id;
   b.textContent = label;
-  b.addEventListener('click', () => { state.move = id; renderClass(); });
+  b.addEventListener('click', () => { state.move = id; renderViewer(); });
   moves.append(b);
 });
 
-function renderClass() {
-  const c = CLASSES.find((x) => x.id === state.cls);
-  showModel(c.id);
+function renderViewer() {
+  showModel(state.cls);
   mv.setAttribute('animation-name', state.move);
-  document.getElementById('c-name').textContent = c.name.toUpperCase();
-  document.getElementById('c-tag').textContent = c.tag;
-  document.getElementById('c-desc').textContent = c.desc;
-  document.getElementById('c-meta').textContent = c.meta;
-  tabs.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === state.cls)));
+  document.getElementById('v-name').textContent = state.cls.charAt(0).toUpperCase() + state.cls.slice(1);
   moves.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === state.move)));
 }
 mv.addEventListener('load', () => {
   // Not every model has every move (Archer has one attack).
   const available = mv.availableAnimations;
   moves.querySelectorAll('button').forEach((b) => { b.disabled = !available.includes(b.dataset.id); });
-  if (!available.includes(state.move)) { state.move = available.includes('attack') ? 'attack' : 'idle'; renderClass(); }
+  if (!available.includes(state.move)) { state.move = available.includes('attack') ? 'attack' : 'idle'; renderViewer(); }
   mv.animationName = state.move;
   mv.play();
 });
-renderClass();
+
+document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
+  if (!viewerLoaded) {
+    viewerLoaded = true;
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
+    document.head.append(s);
+  }
+  state.cls = b.dataset.view;
+  state.move = 'attack';
+  renderViewer();
+  dialog.showModal();
+}));
+document.getElementById('viewer-close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
 // Sticky join bar (phones): shows once the hero is gone, hides while the form itself is on screen
 const sticky = document.getElementById('sticky-cta');
+const form = document.getElementById('signup');
 const seen = { hero: true, form: false };
 function updateSticky() {
   const show = !seen.hero && !seen.form;
@@ -102,11 +196,10 @@ if ('IntersectionObserver' in window) {
     updateSticky();
   });
   io.observe(document.querySelector('.hero'));
-  io.observe(document.getElementById('signup'));
+  io.observe(form);
 }
 
 // Sign-up form: Android and iPhone collect different emails (Google Play tests invite by Google account, TestFlight by Apple ID)
-const form = document.getElementById('signup');
 const msg = document.getElementById('form-msg');
 function say(text, kind) { msg.textContent = text; msg.className = `form-msg ${kind || ''}`; msg.hidden = false; }
 
